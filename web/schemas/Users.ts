@@ -47,7 +47,7 @@ const UsersSchema = new Schema<IUsersSchema>({
   },
   activationCode: {
     type: String,
-    default: null,
+    required: true,
   },
 });
 

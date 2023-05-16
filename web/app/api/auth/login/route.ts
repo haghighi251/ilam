@@ -8,7 +8,9 @@ import connectMongo from "@/utils/connectMongo";
 
 export async function POST(request: NextRequest) {
   try {
+    await console.log(process.env.MONGO);
     await connectMongo();
+    console.log(2);
     const randomNumber = Math.floor(Math.random() * 1000000)
       .toString()
       .padStart(6, "0");
@@ -35,11 +37,13 @@ export async function POST(request: NextRequest) {
       const newUser: IUsersSchema = new UsersSchema({
         mobile: body.mobile,
         status: false,
+        activationCode: randomNumber,
       });
 
       // Hash password using bcrypt and save user to database
       const salt = bcrypt.genSaltSync(10);
-
+      console.log(3);
+      console.log(salt);
       // Save user to database
       await newUser
         .save()
