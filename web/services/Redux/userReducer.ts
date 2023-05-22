@@ -7,6 +7,8 @@ const initialState: Iuser = {
   user: {
     user_id: undefined,
     mobile: undefined,
+    isAdmin: undefined,
+    isDriver: undefined,
   },
   isLoggedIn: false,
 };
@@ -15,14 +17,19 @@ export const userReducer = createSlice({
   name: "user",
   initialState,
   reducers: {
-    actionLogin: (state: Draft<any>, action: PayloadAction<Iuser>) => {
+    actionLogin: (
+      state: Draft<any>,
+      action: PayloadAction<Iuser>
+    ): Draft<any> => {
       return (state = action.payload);
     },
-    actionLogout: (state: Draft<any>) => {
+    actionLogout: (state: Draft<any>): Draft<any> => {
       return (state = {
         user: {
           user_id: undefined,
           mobile: undefined,
+          isAdmin: undefined,
+          isDriver: undefined,
         },
         isLoggedIn: false,
       });

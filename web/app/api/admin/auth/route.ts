@@ -2,6 +2,7 @@ import UsersSchema from "@/schemas/Users";
 import { NextResponse } from "next/server";
 import { type NextRequest } from "next/server";
 import connectMongo from "@/utils/connectMongo";
+import bcrypt from "bcryptjs";
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,32 +12,32 @@ export async function POST(request: NextRequest) {
     // We have to check if the request is for a new user or not.
     const user = await UsersSchema.findOne({
       $or: [
-        { mobile: body.mobile },
-        { username: body.mobile },
-        { email: body.email },
+        { mobile: body.usernameOrEmail, isAdmin: true },
+        { username: body.usernameOrEmail, isAdmin: true },
+        { email: body.usernameOrEmail, isAdmin: true },
       ],
     });
 
     if (user) {
-      // The request belongs to a user who had been registered before.
-      // Now we just need to check if the activtion code is correct.
-      if (user.activationCode !== body.code)
+      // We have to check the password
+      const correctPassword = await bcrypt.compare(
+        body.password,
+        user.password
+      );
+      if (!correctPassword) {
         return NextResponse.json({
           success: false,
-          error: "کد فعال سازی صحیح نمی باشد.",
+          error: "اطلاعات برای ورود صحیح نمی باشد.",
           data: null,
         });
-
-      await UsersSchema.findByIdAndUpdate(user._id, {
-        $set: { activationCode: null, status: true },
-      });
+      }
 
       return NextResponse.json({
         success: true,
         error: "",
         data: {
           user_id: user._id,
-          isAdmin: false, // For security reasons, we don't pass the database isAdmin field here.
+          isAdmin: user.isAdmin, // For security reasons, we don't pass the database isAdmin field here.
           isDriver: user.isDriver,
         },
       });

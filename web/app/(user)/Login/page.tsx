@@ -55,7 +55,11 @@ export default function Login() {
   const router = useRouter();
   const dispatch: AppDispatch = useDispatch();
   const currentUser: Iuser = useSelector(user);
-  if (currentUser.isLoggedIn !== false) router.push("/");
+
+  if (currentUser.isLoggedIn !== false)
+    currentUser.user.isAdmin
+      ? router.push("/admin/dashboard")
+      : router.push("/");
 
   const setMobileChanges = useCallback(
     (value: string) => {
@@ -124,12 +128,13 @@ export default function Login() {
               user: {
                 user_id: res.data.user_id,
                 mobile: mobile,
+                isAdmin: res.data.isAdmin,
+                isDriver: res.data.isDriver,
               },
               isLoggedIn: true,
             })
           );
           router.push("/");
-          setIsLoading(false);
         } else {
           setError(res.error);
           setIsLoading(false);

@@ -15,20 +15,33 @@ const TopMenu = () => {
   };
 
   return (
-    <div className="flex w-full flex-col md:flex-row p-3 md:p-5 bg-sky-300 gap-2">
+    <div className="flex mx-auto flex-col md:flex-row p-3 md:p-5 bg-sky-300 gap-2">
       <Link href="/">شروع</Link>
-      {currentUser.isLoggedIn !== false && (
-        <>
-          <Link
-            href="#"
-            onClick={logOut}>
-            خروج
-          </Link>
-        </>
-      )}
       {currentUser.isLoggedIn === false && (
         <>
           <Link href="/Login">ورود</Link>
+        </>
+      )}
+      {currentUser.isLoggedIn === true && (
+        <>
+          {(currentUser.user.isDriver === false) !== false && (
+            <>
+              <Link
+                href="#"
+                onClick={logOut}>
+                خروج
+              </Link>
+            </>
+          )}
+          {(currentUser.user.isDriver === true) === true && (
+            <>
+              <Link
+                href="#"
+                onClick={logOut}>
+                خروج راننده
+              </Link>
+            </>
+          )}
         </>
       )}
     </div>
