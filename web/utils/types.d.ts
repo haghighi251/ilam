@@ -82,6 +82,7 @@ export interface IParentsSchema extends Document {
 }
 
 export interface IProvincesSchema extends Document {
+  provinceName: string;
   provinceUnique: string;
 }
 

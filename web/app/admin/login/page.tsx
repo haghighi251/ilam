@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/services/Redux/store";
 import { actionLogin, user } from "@/services/Redux/userReducer";
 
-import { isValidEmail, isValidPassword } from "@/utils/validation";
+import { isValidPassword } from "@/utils/validation";
 import { Iuser } from "@/utils/types";
 import Loading from "@/components/loading";
 

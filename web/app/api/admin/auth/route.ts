@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { type NextRequest } from "next/server";
 import connectMongo from "@/utils/connectMongo";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,12 +33,23 @@ export async function POST(request: NextRequest) {
         });
       }
 
+      // Setting admin cookie. It'll be used for subsequent requests.
+      const token = jwt.sign(
+        {
+          id: user._id,
+          isAdmin: user.isAdmin,
+        },
+        process.env.JWT!
+      );
+      let response = NextResponse.next();
+      response.cookies.set("access_token", token);
+
       return NextResponse.json({
         success: true,
         error: "",
         data: {
           user_id: user._id,
-          isAdmin: user.isAdmin, // For security reasons, we don't pass the database isAdmin field here.
+          isAdmin: user.isAdmin,
           isDriver: user.isDriver,
         },
       });
