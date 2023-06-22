@@ -20,4 +20,5 @@ const Layout = () => {
     </NavigationContainer>
   );
 };
+
 export default Layout;
