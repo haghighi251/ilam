@@ -1,6 +1,6 @@
 "use server";
 import mongoose from "mongoose";
 
-const connectMongo = async () => mongoose.connect(process.env.MONGODB_URI!);
+const connectMongo = async () => mongoose.connect(process.env.MONGO!);
 
 export default connectMongo;
