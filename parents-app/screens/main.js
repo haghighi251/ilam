@@ -3,38 +3,11 @@ import { Text, View, TextInput, Image, TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
 import theme from "../config/theme";
 import { useNavigation } from "@react-navigation/native";
+import MapScreen from "../components/MapScreen";
 
-const LogoImage = require("../assets/img/logo.svg");
-const LoginScreen = () => {
-  const [mobile, onChangeMobile] = React.useState("");
-  const navigation = useNavigation();
-  const onPress = () => {
-    navigation.navigate("Verification");
-  };
-  return (
-    <Container>
-      <Row>
-        <Col>
-          <Logo source={LogoImage} />
-          <Title>سرویس مدارس (اولیا)</Title>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Label>شماره موبایل خود را وارد کنید</Label>
-          <MobileInput
-            onChangeText={onChangeMobile}
-            value={mobile}
-            placeholder="0911*******"
-            keyboardType="numeric"
-          />
-          <SubmitButton onPress={onPress}>
-            <ButtonTitle>ارسال کد تایید</ButtonTitle>
-          </SubmitButton>
-        </Col>
-      </Row>
-    </Container>
-  );
+const MainScreen = () => {
+  const onPress = () => {};
+  return <MapScreen />;
 };
 const Container = styled.View`
   flex: 1;
@@ -59,11 +32,18 @@ const Title = styled.Text`
   text-align: center;
 `;
 const Label = styled.Text`
-  font-family: ${theme.typography.heading5.fontFamily};
-  font-size: ${theme.typography.heading5.fontSize};
+  font-family: ${theme.typography.heading6.fontFamily};
+  font-size: ${theme.typography.heading6.fontSize};
   color: ${theme.colors.defaultTextColor};
-  text-align: center;
+  text-align: right;
   margin-bottom: 10px;
+`;
+const SubTitle = styled.Text`
+  font-family: ${theme.typography.productSubTitle.fontFamily};
+  font-size: ${theme.typography.productSubTitle.fontSize};
+  color: ${theme.colors.lightTextColor};
+  text-align: right;
+  margin-bottom: 20px;
 `;
 const MobileInput = styled.TextInput`
   font-family: ${theme.typography.heading6.fontFamily};
@@ -72,12 +52,9 @@ const MobileInput = styled.TextInput`
   text-align: center;
   background-color: white;
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
   padding: 10px;
   border: 1px solid ${theme.colors.defaultTextColor};
   border-radius: 8px;
-  margin-bottom: 20px;
 `;
 const Logo = styled.Image`
   width: 50px;
@@ -90,6 +67,7 @@ const SubmitButton = styled.TouchableOpacity`
   border: 1px solid ${theme.colors.three};
   border-radius: 8px;
   padding: 10px;
+  margin-top: 30px;
 `;
 const ButtonTitle = styled.Text`
   font-family: ${theme.typography.heading6.fontFamily};
@@ -97,4 +75,4 @@ const ButtonTitle = styled.Text`
   color: ${theme.colors.defaultTextColor};
   text-align: center;
 `;
-export default LoginScreen;
+export default MainScreen;

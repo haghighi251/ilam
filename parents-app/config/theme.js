@@ -1,7 +1,3 @@
-import loadFont from "./fonts";
-
-loadFont();
-
 const theme = {
   typography: {
     heading1: {
