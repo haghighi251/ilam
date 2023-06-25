@@ -8,6 +8,7 @@ export async function RedirectWhoAreNotAdmin() {
   const router = useRouter();
   const dispatch: AppDispatch = useDispatch();
   const currentUser: Iuser = useSelector(user);
+
   if (currentUser.isLoggedIn === false || currentUser.user.isAdmin === false)
-    router.push("/");
+    router.push("/admin/login");
 }

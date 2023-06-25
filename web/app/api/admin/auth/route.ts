@@ -20,11 +20,19 @@ export async function POST(request: NextRequest) {
     });
 
     if (user) {
+
+      // We added this part just for the passwords which will manually be added to the database user.password field. It should be removed after handling the user creation from admin panel.
+      let hashedPassword = user.password
+      if (user.password === body.password) {
+        hashedPassword = await bcrypt.hash(user.password, 10)
+      }
+
       // We have to check the password
       const correctPassword = await bcrypt.compare(
         body.password,
-        user.password
+        hashedPassword
       );
+      console.log(correctPassword)
       if (!correctPassword) {
         return NextResponse.json({
           success: false,

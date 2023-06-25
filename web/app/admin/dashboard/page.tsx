@@ -1,3 +1,4 @@
+"use client";
 import LeftSide from "@/components/admin/dashboard/LeftSide";
 import React from "react";
 
