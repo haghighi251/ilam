@@ -1,0 +1,7 @@
+
+Etypescript:S1128")Remove this unused import of 'useEffect'.(â—ÜÚ
+‹typescript:S6440
+"îReact Hook "useRouter" is called in function "layout" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word "use".(¬Ü©ý
+Wtypescript:S1854"6Remove this useless assignment to variable "dispatch".(§«µãýÿÿÿÿ
+’typescript:S6440"ðReact Hook "useDispatch" is called in function "layout" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word "use".(§«µãýÿÿÿÿ
+’typescript:S6440"ðReact Hook "useSelector" is called in function "layout" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word "use".(Î÷ƒ•þÿÿÿÿ
