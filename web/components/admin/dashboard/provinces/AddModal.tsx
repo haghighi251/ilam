@@ -17,11 +17,16 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-
-export default function UpdateModal() {
+interface AddModalProps {
+  onClose: () => void;
+}
+const AddModal: React.FC<AddModalProps> = ({ onClose }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    onClose(); // Call the onClose prop when the modal is closed
+  };
 
   return (
     <div>
@@ -45,3 +50,6 @@ export default function UpdateModal() {
     </div>
   );
 }
+
+
+export default AddModal;
