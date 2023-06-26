@@ -85,7 +85,7 @@ export default function Login() {
         setIsLoading(true);
         setError(null);
         const data: any = await RegisterOrLogin(mobile);
-        console.log(data);
+        // console.log(data);
         if (data.success) {
           setShowActivation(true);
           setIsLoading(false);

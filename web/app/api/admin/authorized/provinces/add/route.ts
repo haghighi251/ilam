@@ -7,6 +7,7 @@ import { IProvincesSchema } from "@/utils/types";
 
 export async function POST(request: NextRequest) {
   try {
+    await connectMongo();
     const body = await request.json();
 
     if (body.province === null || body.province === undefined)
@@ -16,10 +17,10 @@ export async function POST(request: NextRequest) {
         data: null,
       });
 
-    // We have to check if the request is for a new user or not.
-    const provinceDataFromDB = await Provinces.findOne({
-      provinceName: body.province,
-    });
+    // We have to check if the request is for a new province or not.
+    const provinceDataFromDB = await Provinces.findOne(
+      { provinceName: body.province }
+    );
 
     if (provinceDataFromDB)
       return NextResponse.json({
@@ -54,8 +55,13 @@ export async function POST(request: NextRequest) {
           data: null,
         });
       });
+
+    return NextResponse.json({
+      success: true,
+      error: null,
+      data: null,
+    });
   } catch (e) {
-    console.log(e);
     return NextResponse.json({
       success: false,
       error: "خطایی در سرور رخ داده است. لطفا لحظاتی دیگر مجددا تلاش نمایید.",

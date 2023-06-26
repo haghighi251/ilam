@@ -2,23 +2,16 @@
 import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import { Button } from "@mui/material";
 import Alert from "@mui/material/Alert";
-import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "@/services/Redux/store";
-import { actionLogin, user } from "@/services/Redux/userReducer";
-
-import { isValidEmail, isValidPassword } from "@/utils/validation";
-import { Iuser } from "@/utils/types";
 import Loading from "@/components/loading";
-import { RedirectWhoAreNotAdmin } from "@/utils/functions";
 
-const AddNewProvince = async () => {
-  // Redirecting unlogged users
-  await RedirectWhoAreNotAdmin();
-
+const AddForm = (props) => {
+  // Use the handleClose function as needed
+  const handleFormClose = () => {
+    // Perform any necessary logic
+    props.handleClose(); // Call handleClose function from props
+  };
   // Component's states
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>("");
@@ -26,28 +19,43 @@ const AddNewProvince = async () => {
   const [province, setProvince] = useState<string>("");
 
   const handleSubmit = async () => {
+
     let errorMsg = null;
     if (province === null || province === undefined)
       errorMsg = "لطفا نام استان را وارد نمایید.";
+      setError(errorMsg);
+
     if (errorMsg === null) {
       setLoading(true);
       setError(null);
-      const response = await fetch("/api/admin/authorized/provinces/add", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          province: province,
-        }),
-      });
+      try {
+        const response = await fetch("/api/admin/authorized/provinces/add", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            province: province,
+          })
+        });
+
+        const responseData = await response.json();
+        if (responseData.success) {
+          setSuccessMessage("استان با موفقیت ثبت شد.");
+          setProvince("");
+          handleFormClose(); // Close the modal if desired
+        } else {
+          setError(responseData.error);
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        setError("خطایی در سرور رخ داده است. لطفا لحظاتی دیگر مجددا تلاش نمایید.");
+      }
+      setLoading(false);
     }
-    setError(errorMsg);
   };
 
   return (
     <div>
       {" "}
-      <div className="flex flex-col items-center border border-slate-400 shadow-md py-3 md:py-6 px-3 md:px-6 rounded-md m-5">
-        <Alert severity="success">ثبت استان جدید</Alert>
         <Box
           sx={{ display: "flex", alignItems: "flex-end" }}
           className="mb-4">
@@ -68,6 +76,13 @@ const AddNewProvince = async () => {
             {error}
           </Alert>
         )}
+        {successMessage && (
+          <Alert
+            severity="error"
+            className="mb-3 md:mb-6">
+            {successMessage}
+          </Alert>
+        )}
         {!loading && (
           <Button
             variant="contained"
@@ -78,8 +93,7 @@ const AddNewProvince = async () => {
         )}
         {loading && <Loading />}
       </div>
-    </div>
   );
 };
 
-export default AddNewProvince;
+export default AddForm;

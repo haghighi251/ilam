@@ -13,12 +13,12 @@ function createData(
   unique: number,
   city: string,
   school: string,
-  stdents: number,
+  students: number,
   score: number,
   date: string,
   actions: string
 ) {
-  return { name, unique, city, school, stdents, score, date, actions };
+  return { name, unique, city, school, students, score, date, actions };
 }
 
 const rows = [
@@ -35,6 +35,7 @@ const rows = [
 ];
 
 const page = () => {
+  
   return (
     <div className="w-full my-5">
       <TableContainer component={Paper}>

@@ -22,7 +22,15 @@ const RightSide = () => {
         <div className={`rightMenuLink ${isRouteActive("/admin/dashboard/") ? "rightMenuLinkActive" : ""}`}>
           <div className="rightMenuLinkInternally">
             <Dashboard sx={{ my: 0.3 }} />
-            شروع
+            آمار
+          </div>
+        </div>
+      </Link>
+      <Link href={`/admin/dashboard/admins`}>
+        <div className={`rightMenuLink ${isRouteActive("/admin/dashboard/admins") ? "rightMenuLinkActive" : ""}`}>
+          <div className="rightMenuLinkInternally">
+            <School sx={{ my: 0.3 }} />
+            ادمین ها
           </div>
         </div>
       </Link>
@@ -31,6 +39,14 @@ const RightSide = () => {
           <div className="rightMenuLinkInternally">
             <School sx={{ my: 0.3 }} />
             استان ها
+          </div>
+        </div>
+      </Link>
+      <Link href={`/admin/dashboard/cities`}>
+        <div className={`rightMenuLink ${isRouteActive("/admin/dashboard/cities") ? "rightMenuLinkActive" : ""}`}>
+          <div className="rightMenuLinkInternally">
+            <School sx={{ my: 0.3 }} />
+            شهر ها
           </div>
         </div>
       </Link>
@@ -66,8 +82,8 @@ const RightSide = () => {
           </div>
         </div>
       </Link>
-      <Link href={`/`}>
-        <div className={`rightMenuLink ${isRouteActive("/admin/dashboard/") ? "rightMenuLinkActive" : ""}`}>
+      <Link href={`/admin/dashboard/news`}>
+        <div className={`rightMenuLink ${isRouteActive("/admin/dashboard/news") ? "rightMenuLinkActive" : ""}`}>
           <div className="rightMenuLinkInternally">
             <Newspaper sx={{ my: 0.3 }} />
             اخبار

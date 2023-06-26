@@ -32,7 +32,6 @@ export async function POST(request: NextRequest) {
         body.password,
         hashedPassword
       );
-      console.log(correctPassword)
       if (!correctPassword) {
         return NextResponse.json({
           success: false,
