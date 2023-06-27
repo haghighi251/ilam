@@ -1,72 +1,105 @@
-"use client";
-import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { Box, Typography } from '@mui/material';
-import AddModal from "@/components/admin/dashboard/provinces/AddModal";
-
-function createData(
-  name: string,
-  calories: number,
-  fat: string,
-  city: number,
-  links: string
-) {
-  return { name, calories, fat, city, links };
-}
-
-const rows = [
-  createData("ایلام", 159, "20 اردیبهشت 1402", 1, "مشاهده"),
-  createData("فارس", 237, "20 اردیبهشت 1402", 3, "مشاهده"),
-];
+"use client"
+import React, { useEffect, useState } from "react";
+import Box from '@mui/material/Box';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import Row from "@/components/admin/dashboard/cities/TableRows";
+import AddModal from "@/components/admin/dashboard/cities/AddModal";
 
 const page = () => {
+  const [cities, setCities] = useState([]);
+  const [modalClosed, setModalClosed] = useState(false);
+  // To fetch the data and display it after the modal has been closed and the data has been deleted.
+  useEffect(() => {
+    fetchCities();
+  }, [modalClosed])
+
+  async function fetchCities() {
+    try {
+      const response = await fetch("/api/admin/authorized/cities/read", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setCities(data.data);
+      } else {
+        console.error(data.error);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  function createData(
+    cityName: string,
+    cityUnique: string,
+    provinceUnique: string,
+    speedMin: string,
+    speedMax: string,
+  ) {
+    return {
+      cityName,
+      cityUnique,
+      provinceUnique,
+      speedMin,
+      speedMax,
+    };
+  }
+  const rows = cities.map((city) =>
+    createData(
+      city.cityName,
+      city.cityUnique,
+      city.provinceUnique,
+      city.speedMin,
+      city.speedMax,
+      )
+  );
+  function handleModalClose() {
+    setModalClosed(true);
+  }
   return (
     <div className="w-full my-5">
       <Box sx={{ display: 'flex', justifyContent: 'space-between', my: 3 }}>
-        <div>استان ها</div>
-        <div><AddModal /></div>
+        <div>شهر ها</div>
+        <div><AddModal onClose={handleModalClose} /></div>
       </Box>
       <TableContainer component={Paper}>
-        <Table
-          sx={{ minWidth: 350 }}
-          aria-label="simple table">
+        <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
-              <TableCell align="right">نام استان</TableCell>
+              <TableCell />
+              <TableCell align="right">نام شهر</TableCell>
               <TableCell align="right">کد شناسایی</TableCell>
-              <TableCell align="right">تاریخ</TableCell>
-              <TableCell align="right">تعداد شهر ها</TableCell>
-              <TableCell align="right">عملیات</TableCell>
+              <TableCell align="right">نام استان</TableCell>
+              <TableCell align="right">کد استان</TableCell>
+              <TableCell align="right">حداقل سرعت مجاز</TableCell>
+              <TableCell align="right">حداکثر سرعت مجاز</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                <TableCell
-                 align="right"
-                  component="th"
-                  scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell align="right">{row.calories}</TableCell>
-                <TableCell align="right">{row.fat}</TableCell>
-                <TableCell align="right">{row.city}</TableCell>
-                <TableCell align="right">{row.links}</TableCell>
-              </TableRow>
+              <Row key={row.cityUnique} row={row} />
             ))}
           </TableBody>
         </Table>
       </TableContainer>
     </div>
   );
-};
+}
 
 export default page;

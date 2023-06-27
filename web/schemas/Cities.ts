@@ -2,7 +2,12 @@ import { Schema, model, models } from "mongoose";
 import { ICitiesSchema } from "@/utils/types";
 
 const CitiesSchema = new Schema<ICitiesSchema>({
-  citiesUnique: {
+  cityName: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  cityUnique: {
     type: String,
     required: true,
     unique: true,
@@ -13,11 +18,11 @@ const CitiesSchema = new Schema<ICitiesSchema>({
   },
   speedMin: {
     type: String,
-    required: true,
+    required: false,
   },
   speedMax: {
     type: String,
-    required: true,
+    required: false,
   },
 });
 

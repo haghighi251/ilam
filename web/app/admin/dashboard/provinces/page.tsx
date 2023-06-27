@@ -25,7 +25,7 @@ const page = () => {
 
   async function fetchProvinces() {
     try {
-      const response = await fetch("/api/admin/authorized/provinces/read", {
+      const response = await fetch("/api/admin/authorized/provinces/all", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

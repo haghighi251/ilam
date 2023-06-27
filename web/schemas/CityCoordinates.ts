@@ -2,6 +2,10 @@ import { Schema, model, models } from "mongoose";
 import { ICityCoordinatesSchema } from "@/utils/types";
 
 const CityCoordinatesSchema = new Schema<ICityCoordinatesSchema>({
+  cityCoordinateUnique: {
+    type: String,
+    required: true,
+  },
   cityUnique: {
     type: String,
     required: true,
@@ -16,7 +20,7 @@ const CityCoordinatesSchema = new Schema<ICityCoordinatesSchema>({
   },
   rowNumber: {
     type: Number,
-    required: true,
+    required: false,
   },
 });
 
