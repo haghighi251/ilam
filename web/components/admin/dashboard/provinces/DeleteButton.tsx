@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import LoadingButton from '@mui/lab/LoadingButton';
 
-const DeleteButton = ({ setRefreshData, provinceName, provinceUnique }) => {
+const DeleteButton = ({ handleClose, provinceName, provinceUnique }) => {
     // Component's states
     const [loading, setLoading] = React.useState<boolean>(false);
     const [error, setError] = React.useState<string | null>("");
@@ -34,7 +34,7 @@ const DeleteButton = ({ setRefreshData, provinceName, provinceUnique }) => {
                 console.log(responseData);
                 if (responseData.success) {
                     setSuccessMessage("استان با موفقیت حذف شد.");
-                    setRefreshData(true); // refresh the page data if the selected data deleted successfully.
+                    handleClose(); // refresh the page data if the selected data deleted successfully.
                 } else {
                     setError(responseData.error);
                 }
@@ -49,7 +49,6 @@ const DeleteButton = ({ setRefreshData, provinceName, provinceUnique }) => {
   return (
     <div>
         <LoadingButton
-          sx={{ mr: 2 }}
           size="medium"
           color="error"
           onClick={handleDelete}

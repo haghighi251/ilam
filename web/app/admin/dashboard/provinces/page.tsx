@@ -1,5 +1,5 @@
 "use client";
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -11,16 +11,17 @@ import { Box, Typography } from '@mui/material';
 import AddModal from "@/components/admin/dashboard/provinces/AddModal";
 import UpdateModal from "@/components/admin/dashboard/provinces/UpdateModal";
 import DeleteButton from "@/components/admin/dashboard/provinces/DeleteButton";
+import DeleteModal from "@/components/admin/dashboard/provinces/DeleteModal";
 
 
 const page = () => {
-  const [provinces, setProvinces] = React.useState([]);
-  const [modalClosed, setModalClosed] = React.useState(false);
-  const [refreshData, setRefreshData] = React.useState(false);
+  const [provinces, setProvinces] = useState([]);
+  const [modalClosed, setModalClosed] = useState(false);
 
-  React.useEffect(() => {
+  // To fetch the data and display it after the modal has been closed and the data has been deleted.
+  useEffect(() => {
     fetchProvinces();
-  }, [modalClosed, refreshData]);
+  }, [modalClosed]);
 
   async function fetchProvinces() {
     try {
@@ -46,15 +47,16 @@ const page = () => {
   function createData(provinceName, provinceUnique) {
     return { provinceName, provinceUnique };
   }
+  const rows = provinces.map((province) =>
+  createData(
+    province.provinceName,
+    province.provinceUnique,
+    )
+  );
+
   function handleModalClose() {
     setModalClosed(true);
   }
-  const rows = provinces.map((province) =>
-    createData(
-      province.provinceName,
-      province.provinceUnique,
-    )
-  );
   return (
     <div className="w-full my-5">
       <Box sx={{ display: 'flex', justifyContent: 'space-between', my: 3 }}>
@@ -89,7 +91,7 @@ const page = () => {
                 <TableCell align="right">
                   <Box sx={{ display: 'flex', justifyContent: '' }}>
                     <UpdateModal onClose={handleModalClose} provinceName={row.provinceName} provinceUnique={row.provinceUnique} />
-                    <DeleteButton setRefreshData={setRefreshData} provinceName={row.provinceName} provinceUnique={row.provinceUnique} />
+                    <DeleteModal onClose={handleModalClose} provinceName={row.provinceName} provinceUnique={row.provinceUnique} />
                   </Box>
                 </TableCell>
                 {/* <TableCell align="right">{row.city}</TableCell>
