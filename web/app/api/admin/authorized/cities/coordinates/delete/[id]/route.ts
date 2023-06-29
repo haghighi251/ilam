@@ -12,7 +12,7 @@ export async function DELETE(request: NextRequest, {params}) {
     if (params.id === null || params.id === undefined)
       return NextResponse.json({
         success: false,
-        error: "برای حذف صحیح، کد شناسایی یا نام استان ارسال نشده است.",
+        error: "برای حذف صحیح، کد شناسایی مختصات ارسال نشده است.",
         data: null,
       });
 

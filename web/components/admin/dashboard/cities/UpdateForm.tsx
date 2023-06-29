@@ -1,17 +1,20 @@
 'use client';
-import { Button } from '@mui/material';
+import {
+   Button,
+   FormControl,
+   InputLabel,
+   MenuItem,
+   Select,
+   SelectChangeEvent,
+} from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import { useEffect, useState } from 'react';
 
 import Loading from '@/components/loading';
 
-const AddForm = (props) => {
+const UpdateForm = (props) => {
    // Use the handleClose function as needed
    const handleFormClose = () => {
       // Perform any necessary logic
@@ -22,36 +25,50 @@ const AddForm = (props) => {
    const [error, setError] = useState<string | null>('');
    const [successMessage, setSuccessMessage] = useState<string>('');
    const [provinces, setProvinces] = useState([]);
-   const [cityName, setCityName] = useState<string>('');
-   const [speedMin, setSpeedMin] = useState<string>('');
-   const [speedMax, setSpeedMax] = useState<string>('');
-   const [provinceUnique, setProvinceUnique] = useState<string>('');
+   const [cityName, setCityName] = useState<string>(props.cityName);
+   const [provinceUnique, setProvinceUnique] = useState<string>(
+      props.provinceUnique
+   );
+   const [speedMin, setSpeedMin] = useState<string>(props.speedMin);
+   const [speedMax, setSpeedMax] = useState<string>(props.speedMax);
 
    const handleSubmit = async () => {
       let errorMsg = null;
-      if (cityName === null || cityName === undefined)
-         errorMsg = 'لطفا نام شهر را وارد نمایید.';
+      if (
+         cityName === null ||
+         cityName === undefined ||
+         provinceUnique === null ||
+         provinceUnique === undefined
+      )
+         errorMsg = 'لطفا نام شهر و استان را وارد نمایید.';
       setError(errorMsg);
 
       if (errorMsg === null) {
          setLoading(true);
          setError(null);
          try {
-            const response = await fetch('/api/admin/authorized/cities/add', {
-               method: 'POST',
-               headers: { 'Content-Type': 'application/json' },
-               body: JSON.stringify({
-                  cityName: cityName,
-                  provinceUnique: provinceUnique,
-                  speedMin: speedMin,
-                  speedMax: speedMax,
-               }),
-            });
+            const response = await fetch(
+               '/api/admin/authorized/cities/update',
+               {
+                  method: 'PATCH',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                     cityName: props.cityName,
+                     cityUnique: props.cityUnique,
+                     provinceUnique: props.provinceUnique,
+                     speedMin: props.speedMin,
+                     speedMax: props.speedMax,
+                  }),
+               }
+            );
 
             const responseData = await response.json();
             if (responseData.success) {
                setSuccessMessage('شهر با موفقیت ثبت شد.');
                setCityName('');
+               setProvinceUnique('');
+               setSpeedMin('');
+               setSpeedMax('');
                handleFormClose(); // Close the modal if desired
             } else {
                setError(responseData.error);
@@ -65,10 +82,9 @@ const AddForm = (props) => {
          setLoading(false);
       }
    };
-
    async function fetchProvinces() {
       try {
-         const response = await fetch('/api/admin/authorized/provinces/all', {
+         const response = await fetch('/api/admin/authorized/cities/all', {
             method: 'GET',
             headers: {
                'Content-Type': 'application/json',
@@ -86,6 +102,7 @@ const AddForm = (props) => {
          console.error(error);
       }
    }
+
    useEffect(() => {
       fetchProvinces();
    }, []);
@@ -93,6 +110,7 @@ const AddForm = (props) => {
    const selectProvince = (event: SelectChangeEvent) => {
       setProvinceUnique(event.target.value as string);
    };
+
    return (
       <div>
          {' '}
@@ -161,4 +179,4 @@ const AddForm = (props) => {
    );
 };
 
-export default AddForm;
+export default UpdateForm;

@@ -23,8 +23,8 @@ interface DeleteModalProps {
 }
 const DeleteModal: React.FC<DeleteModalProps> = ({
    onClose,
-   provinceName,
-   provinceUnique,
+   cityName,
+   cityUnique,
 }) => {
    const [open, setOpen] = React.useState(false);
    const handleOpen = () => setOpen(true);
@@ -53,7 +53,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
          >
             <Box sx={style}>
                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  آیا از حذف استان {provinceName} اطمینان دارید؟
+                  آیا از حذف شهر {cityName} اطمینان دارید؟
                </Typography>
                <Box
                   sx={{
@@ -64,8 +64,8 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
                >
                   <DeleteButton
                      handleClose={handleClose}
-                     provinceName={provinceName}
-                     provinceUnique={provinceUnique}
+                     cityName={cityName}
+                     cityUnique={cityUnique}
                   />
                   <Button variant="contained" onClick={handleClose}>
                      خیر

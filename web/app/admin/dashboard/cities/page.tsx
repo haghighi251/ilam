@@ -26,7 +26,7 @@ const page = () => {
 
   async function fetchCities() {
     try {
-      const response = await fetch("/api/admin/authorized/cities/read", {
+      const response = await fetch("/api/admin/authorized/cities/all", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -89,6 +89,7 @@ const page = () => {
               <TableCell align="right">کد استان</TableCell>
               <TableCell align="right">حداقل سرعت مجاز</TableCell>
               <TableCell align="right">حداکثر سرعت مجاز</TableCell>
+              <TableCell align="right">عملیات</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

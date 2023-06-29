@@ -7,7 +7,13 @@ import { useState } from 'react';
 
 import Loading from '@/components/loading';
 
-const UpdateForm = (props) => {
+const UpdateForm = (props: {
+   handleClose: () => void;
+   latitude: string | (() => string);
+   longitude: string | (() => string);
+   rowNumber: string | (() => string);
+   cityCoordinateUnique: any;
+}) => {
    // Use the handleClose function as needed
    const handleFormClose = () => {
       // Perform any necessary logic
@@ -17,12 +23,19 @@ const UpdateForm = (props) => {
    const [loading, setLoading] = useState<boolean>(false);
    const [error, setError] = useState<string | null>('');
    const [successMessage, setSuccessMessage] = useState<string>('');
-   const [province, setProvince] = useState<string>(props.provinceName);
+   const [latitude, setLatitude] = useState<string>(props.latitude);
+   const [longitude, setLongitude] = useState<string>(props.longitude);
+   const [rowNumber, setRowNumber] = useState<string>(props.rowNumber);
 
    const handleSubmit = async () => {
       let errorMsg = null;
-      if (province === null || province === undefined)
-         errorMsg = 'لطفا نام استان را وارد نمایید.';
+      if (
+         latitude === null ||
+         latitude === undefined ||
+         longitude === null ||
+         longitude === undefined
+      )
+         errorMsg = 'لطفا مختصات شهر را وارد نمایید.';
       setError(errorMsg);
 
       if (errorMsg === null) {
@@ -30,21 +43,25 @@ const UpdateForm = (props) => {
          setError(null);
          try {
             const response = await fetch(
-               '/api/admin/authorized/provinces/update',
+               '/api/admin/authorized/cities/coordinates/update',
                {
                   method: 'PATCH',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({
-                     province: province,
-                     provinceUnique: props.provinceUnique,
+                     cityCoordinateUnique: props.cityCoordinateUnique,
+                     latitude: props.latitude,
+                     longitude: props.longitude,
+                     rowNumber: props.rowNumber,
                   }),
                }
             );
 
             const responseData = await response.json();
             if (responseData.success) {
-               setSuccessMessage('استان با موفقیت ثبت شد.');
-               setProvince('');
+               setSuccessMessage('شهر با موفقیت ثبت شد.');
+               setLatitude('');
+               setLongitude('');
+               setRowNumber('');
                handleFormClose(); // Close the modal if desired
             } else {
                setError(responseData.error);
@@ -62,14 +79,32 @@ const UpdateForm = (props) => {
    return (
       <div>
          {' '}
-         <Box sx={{ display: 'flex', alignItems: 'flex-end' }} className="mb-4">
+         <Box className="mb-4">
             <TextField
                id="input-with-sx"
-               label="نام استان"
+               label="عرض جغرافیایی (Lat)"
                variant="standard"
-               value={province}
+               value={latitude}
                name="usernameOrEmail"
-               onChange={(e) => setProvince(e.target.value)}
+               onChange={(e) => setLatitude(e.target.value)}
+               required
+            />
+            <TextField
+               id="input-with-sx"
+               label="طول جغرافیایی (Lon)"
+               variant="standard"
+               value={longitude}
+               name="usernameOrEmail"
+               onChange={(e) => setLongitude(e.target.value)}
+               required
+            />
+            <TextField
+               id="input-with-sx"
+               label="شماره ستون"
+               variant="standard"
+               value={rowNumber}
+               name="usernameOrEmail"
+               onChange={(e) => setRowNumber(e.target.value)}
                required
             />
          </Box>

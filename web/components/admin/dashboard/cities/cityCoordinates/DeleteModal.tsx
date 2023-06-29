@@ -18,13 +18,12 @@ const style = {
    boxShadow: 24,
    p: 4,
 };
-interface DeleteModalProps {
+interface DeleteCoorModalProps {
    onClose: () => void;
 }
-const DeleteModal: React.FC<DeleteModalProps> = ({
+const DeleteCoorModal: React.FC<DeleteCoorModalProps> = ({
    onClose,
-   provinceName,
-   provinceUnique,
+   cityCoordinateUnique,
 }) => {
    const [open, setOpen] = React.useState(false);
    const handleOpen = () => setOpen(true);
@@ -53,7 +52,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
          >
             <Box sx={style}>
                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  آیا از حذف استان {provinceName} اطمینان دارید؟
+                  آیا از حذف این مختصات اطمینان دارید؟
                </Typography>
                <Box
                   sx={{
@@ -64,8 +63,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
                >
                   <DeleteButton
                      handleClose={handleClose}
-                     provinceName={provinceName}
-                     provinceUnique={provinceUnique}
+                     cityCoordinateUnique={cityCoordinateUnique}
                   />
                   <Button variant="contained" onClick={handleClose}>
                      خیر
@@ -77,4 +75,4 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
    );
 };
 
-export default DeleteModal;
+export default DeleteCoorModal;

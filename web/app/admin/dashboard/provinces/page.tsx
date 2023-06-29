@@ -72,8 +72,7 @@ const page = () => {
               <TableCell align="right">نام استان</TableCell>
               <TableCell align="right">کد شناسایی</TableCell>
               <TableCell align="right">عملیات</TableCell>
-              {/* <TableCell align="right">تعداد شهر ها</TableCell>
-              <TableCell align="right">عملیات</TableCell> */}
+              {/* <TableCell align="right">تعداد شهر ها</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>

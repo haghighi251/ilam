@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 
-import DeleteButton from './DeleteButton';
+import UpdateForm from './UpdateForm';
 
 const style = {
    position: 'absolute' as 'absolute',
@@ -18,13 +18,16 @@ const style = {
    boxShadow: 24,
    p: 4,
 };
-interface DeleteModalProps {
+interface UpdateModalProps {
    onClose: () => void;
 }
-const DeleteModal: React.FC<DeleteModalProps> = ({
+const UpdateModal: React.FC<UpdateModalProps> = ({
    onClose,
-   provinceName,
+   cityName,
+   cityUnique,
    provinceUnique,
+   speedMin,
+   speedMax,
 }) => {
    const [open, setOpen] = React.useState(false);
    const handleOpen = () => setOpen(true);
@@ -36,14 +39,11 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
    return (
       <div>
          <Button
-            sx={{ mr: 2 }}
-            size="medium"
-            color="error"
-            variant="outlined"
+            variant="contained"
             startIcon={<CreateTwoToneIcon sx={{ ml: 2 }} />}
             onClick={handleOpen}
          >
-            حذف
+            ویرایش
          </Button>
          <Modal
             open={open}
@@ -53,28 +53,21 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
          >
             <Box sx={style}>
                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  آیا از حذف استان {provinceName} اطمینان دارید؟
+                  ویرایش شهر
                </Typography>
-               <Box
-                  sx={{
-                     display: 'flex',
-                     justifyContent: 'space-between',
-                     my: 3,
-                  }}
-               >
-                  <DeleteButton
-                     handleClose={handleClose}
-                     provinceName={provinceName}
-                     provinceUnique={provinceUnique}
-                  />
-                  <Button variant="contained" onClick={handleClose}>
-                     خیر
-                  </Button>
-               </Box>
+
+               <UpdateForm
+                  handleClose={handleClose}
+                  cityName={cityName}
+                  cityUnique={cityUnique}
+                  provinceUnique={provinceUnique}
+                  speedMin={speedMin}
+                  speedMax={speedMax}
+               />
             </Box>
          </Modal>
       </div>
    );
 };
 
-export default DeleteModal;
+export default UpdateModal;

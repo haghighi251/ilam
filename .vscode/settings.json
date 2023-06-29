@@ -1,0 +1,14 @@
+{
+  "prettier.tabWidth": 3,
+  "prettier.singleAttributePerLine": true,
+  "prettier.endOfLine": "auto",
+  "prettier.enableDebugLogs": true,
+  "eslint.debug": true,
+  "eslint.experimental.useFlatConfig": true,
+  "eslint.format.enable": true,
+  "eslint.run": "onSave",
+  "vs-code-prettier-eslint.prettierLast": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  }
+}

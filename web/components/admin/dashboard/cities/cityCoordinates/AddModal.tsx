@@ -8,7 +8,7 @@ import * as React from 'react';
 import AddForm from './AddForm';
 
 const style = {
-   position: 'absolute' as 'absolute',
+   position: 'absolute' as const,
    top: '50%',
    left: '50%',
    transform: 'translate(-50%, -50%)',
@@ -21,7 +21,7 @@ const style = {
 interface AddModalProps {
    onClose: () => void;
 }
-const AddModal: React.FC<AddModalProps> = ({ onClose }) => {
+const AddModal: React.FC<AddModalProps> = ({ onClose, cityUnique }) => {
    const [open, setOpen] = React.useState(false);
    const handleOpen = () => setOpen(true);
    const handleClose = () => {
@@ -46,10 +46,10 @@ const AddModal: React.FC<AddModalProps> = ({ onClose }) => {
          >
             <Box sx={style}>
                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  ثبت استان جدید
+                  ثبت مختصات جدید
                </Typography>
 
-               <AddForm handleClose={handleClose} />
+               <AddForm handleClose={handleClose} cityUnique={cityUnique} />
             </Box>
          </Modal>
       </div>

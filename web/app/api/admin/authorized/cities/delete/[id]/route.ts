@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { type NextRequest } from "next/server";
 import connectMongo from "@/utils/connectMongo";
-import bcrypt from "bcryptjs";
 import Cities from "@/schemas/Cities";
 import { ICitiesSchema } from "@/utils/types";
+import CityCoordinates from "@/schemas/CityCoordinates";
 
 export async function DELETE(request: NextRequest, {params}) {
   try {
@@ -22,13 +22,17 @@ export async function DELETE(request: NextRequest, {params}) {
     const cityDataFromDB = await Cities.findOneAndDelete({
       cityUnique: params.id,
     });
-
+    
     if (!cityDataFromDB)
       return NextResponse.json({
         success: false,
-        error: "استانی با این کد شناسایی یافت نشد.",
+        error: "شهری با این کد شناسایی یافت نشد.",
         data: null,
       });
+    else {
+      // Find the coordinate records relating to the city
+      await CityCoordinates.deleteMany({ "cityUnique" : params.id });
+    }
 
     return NextResponse.json({
       success: true,
