@@ -9,20 +9,20 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from 'react';
 
-import AddModal from '@/components/admin/dashboard/cities/AddModal';
-import Row from '@/components/admin/dashboard/cities/TableRows';
+import AddModal from '@/components/admin/dashboard/drivers/AddModal';
+import Row from '@/components/admin/dashboard/drivers/TableRows';
 
 const page = () => {
-   const [cities, setCities] = useState([]);
+   const [drivers, setDrivers] = useState([]);
    const [modalClosed, setModalClosed] = useState(false);
    // To fetch the data and display it after the modal has been closed and the data has been deleted.
    useEffect(() => {
-      fetchCities();
+      fetchDrivers();
    }, [modalClosed]);
 
-   async function fetchCities() {
+   async function fetchDrivers() {
       try {
-         const response = await fetch('/api/admin/authorized/cities/all', {
+         const response = await fetch('/api/admin/authorized/drivers/all', {
             method: 'GET',
             headers: {
                'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ const page = () => {
          const data = await response.json();
 
          if (response.ok) {
-            setCities(data.data);
+            setDrivers(data.data);
          } else {
             console.error(data.error);
          }
@@ -42,27 +42,24 @@ const page = () => {
    }
 
    function createData(
-      cityName: string,
-      cityUnique: string,
-      provinceUnique: string,
-      speedMin: string,
-      speedMax: string
+      name: string,
+      driverUnique: string,
+      schoolUniqueId: string,
+      score: string
    ) {
       return {
-         cityName,
-         cityUnique,
-         provinceUnique,
-         speedMin,
-         speedMax,
+         name,
+         driverUnique,
+         schoolUniqueId,
+         score,
       };
    }
-   const rows = cities.map((city) =>
+   const rows = drivers.map((driver) =>
       createData(
-         city.cityName,
-         city.cityUnique,
-         city.provinceUnique,
-         city.speedMin,
-         city.speedMax
+         driver.name,
+         driver.driverUnique,
+         driver.schoolUniqueId,
+         driver.score
       )
    );
    function handleModalClose() {
@@ -71,7 +68,7 @@ const page = () => {
    return (
       <div className="w-full my-5">
          <Box sx={{ display: 'flex', justifyContent: 'space-between', my: 3 }}>
-            <div>شهر ها</div>
+            <div>راننده ها</div>
             <div>
                <AddModal onClose={handleModalClose} />
             </div>
@@ -81,18 +78,17 @@ const page = () => {
                <TableHead>
                   <TableRow>
                      <TableCell />
-                     <TableCell align="right">نام شهر</TableCell>
+                     <TableCell align="right">نام راننده</TableCell>
                      <TableCell align="right">کد شناسایی</TableCell>
-                     <TableCell align="right">نام استان</TableCell>
-                     <TableCell align="right">کد استان</TableCell>
-                     <TableCell align="right">حداقل سرعت مجاز</TableCell>
-                     <TableCell align="right">حداکثر سرعت مجاز</TableCell>
+                     <TableCell align="right">نام مدرسه</TableCell>
+                     <TableCell align="right">کد مدرسه</TableCell>
+                     <TableCell align="right">امتیاز</TableCell>
                      <TableCell align="right">عملیات</TableCell>
                   </TableRow>
                </TableHead>
                <TableBody>
                   {rows.map((row) => (
-                     <Row key={row.cityUnique} row={row} />
+                     <Row row={row} />
                   ))}
                </TableBody>
             </Table>

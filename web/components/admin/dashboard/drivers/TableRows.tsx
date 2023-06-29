@@ -10,29 +10,29 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import React, { useEffect, useState } from 'react';
 
-import AddModal from './driverDocuments/AddModal';
-import DeleteCoorModal from './driverDocuments/DeleteModal';
-import UpdateCoorModal from './driverDocuments/UpdateModal';
 import DeleteModal from './DeleteModal';
+import AddModal from './driverDocuments/AddModal';
+import DeleteDocModal from './driverDocuments/DeleteModal';
+import UpdateDocModal from './driverDocuments/UpdateModal';
 import UpdateModal from './UpdateModal';
 
 const Row = (props) => {
-   const { key, row } = props;
+   const { row } = props;
    const [open, setOpen] = useState(false);
 
-   const [cityCoordinates, setCityCoordinates] = useState([]);
+   const [driverDocuments, setDriverDocuments] = useState([]);
    const [modalClosed, setModalClosed] = useState(false);
-   const [provinceName, setProvinceName] = useState('');
+   const [schoolName, setSchoolName] = useState('');
    // To fetch the data and display it after the modal has been closed and the data has been deleted.
    useEffect(() => {
-      fetchCityCoordinates();
-      fetchProvince();
+      fetchDriverDocuments();
+      fetchSchool();
    }, [modalClosed]);
 
-   async function fetchCityCoordinates() {
+   async function fetchDriverDocuments() {
       try {
          const response = await fetch(
-            '/api/admin/authorized/cities/coordinates/read',
+            `/api/admin/authorized/drivers/documents/read/${row.driverUnique}`,
             {
                method: 'GET',
                headers: {
@@ -44,7 +44,7 @@ const Row = (props) => {
          const data = await response.json();
 
          if (response.ok) {
-            setCityCoordinates(data.data);
+            setDriverDocuments(data.data);
          } else {
             console.error(data.error);
          }
@@ -54,34 +54,31 @@ const Row = (props) => {
    }
 
    function createData(
-      cityCoordinateUnique: string,
-      cityUnique: string,
-      latitude: string,
-      longitude: string,
-      rowNumber: string
+      driverDocumentUnique: string,
+      driverUnique: string,
+      documentName: string,
+      file: string
    ) {
       return {
-         cityCoordinateUnique,
-         cityUnique,
-         latitude,
-         longitude,
-         rowNumber,
+         driverDocumentUnique,
+         driverUnique,
+         documentName,
+         file,
       };
    }
-   const coordinatesRows = cityCoordinates.map((item) =>
+   const coordinatesRows = driverDocuments.map((item) =>
       createData(
-         item.cityCoordinateUnique,
-         item.cityUnique,
-         item.latitude,
-         item.longitude,
-         item.rowNumber
+         item.driverDocumentUnique,
+         item.driverUnique,
+         item.documentName,
+         item.file
       )
    );
 
-   async function fetchProvince() {
+   async function fetchSchool() {
       try {
          const response = await fetch(
-            `/api/admin/authorized/provinces/read/${row.provinceUnique}`,
+            `/api/admin/authorized/schools/read/${row.schoolUniqueId}`,
             {
                method: 'GET',
                headers: { 'Content-Type': 'application/json' },
@@ -89,7 +86,7 @@ const Row = (props) => {
          );
          const responseData = await response.json();
          if (response.ok) {
-            setProvinceName(responseData.data);
+            setSchoolName(responseData.data);
          } else {
             console.error(responseData.error);
          }
@@ -195,7 +192,7 @@ const Row = (props) => {
                                  <Box
                                     sx={{ display: 'flex', justifyContent: '' }}
                                  >
-                                    <UpdateCoorModal
+                                    <UpdateDocModal
                                        onClose={handleModalClose}
                                        cityCoordinateUnique={
                                           item.cityCoordinateUnique
@@ -204,7 +201,7 @@ const Row = (props) => {
                                        longitude={item.longitude}
                                        rowNumber={item.rowNumber}
                                     />
-                                    <DeleteCoorModal
+                                    <DeleteDocModal
                                        onClose={handleModalClose}
                                        cityCoordinateUnique={
                                           item.cityCoordinateUnique

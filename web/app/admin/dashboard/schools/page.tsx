@@ -85,7 +85,7 @@ const page = () => {
                </TableHead>
                <TableBody>
                   {rows.map((row) => (
-                     <Row key={row.schoolUniqueId} row={row} />
+                     <Row row={row} />
                   ))}
                </TableBody>
             </Table>

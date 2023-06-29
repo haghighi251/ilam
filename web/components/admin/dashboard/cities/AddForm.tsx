@@ -52,6 +52,9 @@ const AddForm = (props) => {
             if (responseData.success) {
                setSuccessMessage('شهر با موفقیت ثبت شد.');
                setCityName('');
+               setSpeedMin('');
+               setSpeedMax('');
+               setProvinceUnique('');
                handleFormClose(); // Close the modal if desired
             } else {
                setError(responseData.error);

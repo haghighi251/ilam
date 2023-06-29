@@ -32,7 +32,7 @@ const Row = (props) => {
    async function fetchCityCoordinates() {
       try {
          const response = await fetch(
-            '/api/admin/authorized/cities/coordinates/read',
+            `/api/admin/authorized/cities/coordinates/read/${row.cityUnique}`,
             {
                method: 'GET',
                headers: {

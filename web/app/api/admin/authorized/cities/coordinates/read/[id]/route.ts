@@ -1,19 +1,21 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-import School from '@/schemas/School';
+import CityCoordinates from '@/schemas/CityCoordinates';
 import connectMongo from '@/utils/connectMongo';
 
 export async function GET(request: NextRequest, { params }) {
    try {
       await connectMongo();
-      // Fetch the School
-      const schoolDataFromDB = await School.findOne({
-         schoolUniqueId: params.id,
+
+      // Fetch all provinces
+      const cityCoordinateDataFromDB = await CityCoordinates.find({
+         cityUnique: params.id,
       });
+
       return NextResponse.json({
          success: true,
          error: null,
-         data: schoolDataFromDB,
+         data: cityCoordinateDataFromDB,
       });
    } catch (e) {
       console.error(e);

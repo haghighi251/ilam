@@ -1,19 +1,21 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-import School from '@/schemas/School';
+import DriversDocuments from '@/schemas/DriversDocuments';
 import connectMongo from '@/utils/connectMongo';
 
 export async function GET(request: NextRequest, { params }) {
    try {
       await connectMongo();
-      // Fetch the School
-      const schoolDataFromDB = await School.findOne({
-         schoolUniqueId: params.id,
+
+      // Fetch all provinces
+      const driverDocumentsDataFromDB = await DriversDocuments.find({
+         driverUnique: params.id,
       });
+
       return NextResponse.json({
          success: true,
          error: null,
-         data: schoolDataFromDB,
+         data: driverDocumentsDataFromDB,
       });
    } catch (e) {
       console.error(e);

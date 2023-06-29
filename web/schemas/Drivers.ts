@@ -19,10 +19,6 @@ const DriversSchema = new Schema<IDriversSchema>({
          unique: true,
       },
    ],
-   schoolAdminUnique: {
-      type: String,
-      required: true,
-   },
    score: {
       type: String,
       default: null,

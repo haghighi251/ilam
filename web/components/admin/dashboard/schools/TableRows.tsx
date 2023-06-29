@@ -7,7 +7,7 @@ import DeleteModal from './DeleteModal';
 import UpdateModal from './UpdateModal';
 
 const Row = (props) => {
-   const { key, row } = props;
+   const { row } = props;
    const [open, setOpen] = useState(false);
 
    const [modalClosed, setModalClosed] = useState(false);
@@ -28,7 +28,7 @@ const Row = (props) => {
          );
          const responseData = await response.json();
          if (response.ok) {
-            setCityName(responseData.data);
+            setCityName(responseData.data.cityName);
          } else {
             console.error(responseData.error);
          }
