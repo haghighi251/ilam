@@ -97,7 +97,7 @@ const RightSide = () => {
             >
                <div className="rightMenuLinkInternally">
                   <LocalTaxi sx={{ my: 0.3 }} />
-                  مدیریت رانندگان
+                  رانندگان
                </div>
             </div>
          </Link>
@@ -112,6 +112,20 @@ const RightSide = () => {
                <div className="rightMenuLinkInternally">
                   <FamilyRestroom sx={{ my: 0.3 }} />
                   اولیا
+               </div>
+            </div>
+         </Link>
+         <Link href={`/admin/dashboard/students`}>
+            <div
+               className={`rightMenuLink ${
+                  isRouteActive('/admin/dashboard/students')
+                     ? 'rightMenuLinkActive'
+                     : ''
+               }`}
+            >
+               <div className="rightMenuLinkInternally">
+                  <FamilyRestroom sx={{ my: 0.3 }} />
+                  دانش آموزان
                </div>
             </div>
          </Link>
