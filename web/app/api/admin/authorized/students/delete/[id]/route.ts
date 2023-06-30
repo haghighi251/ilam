@@ -3,46 +3,36 @@ import { NextResponse, type NextRequest } from 'next/server';
 import School from '@/schemas/School';
 import connectMongo from '@/utils/connectMongo';
 
-export async function PATCH(request: NextRequest) {
+export async function DELETE(request: NextRequest, { params }) {
    try {
       await connectMongo();
-      const body = await request.json();
-      console.log(body);
 
-      if (body.name === null || body.name === undefined) {
+      if (params.id === null || params.id === undefined)
          return NextResponse.json({
             success: false,
-            error: 'اطلاعات برای ثبت صحیح نمی باشد.',
+            error: 'برای حذف صحیح، کد شناسایی یا نام مدرسه ارسال نشده است.',
             data: null,
          });
-      }
 
-      const schoolData = await School.findOneAndUpdate(
-         { schoolUniqueId: body.schoolUniqueId },
-         {
-            $set: {
-               name: body.name,
-               latitude: body.latitude,
-               longitude: body.longitude,
-            },
-         },
-         { new: true }
-      );
+      // Find the document to delete by schoolUnique
+      const schoolDataFromDB = await School.findOneAndDelete({
+         schoolUniqueId: params.id,
+      });
 
-      if (!schoolData) {
+      if (!schoolDataFromDB)
          return NextResponse.json({
             success: false,
-            error: 'مدرسه ای با این شناسه وجود ندارد.',
+            error: 'مدرسه با این کد شناسایی یافت نشد.',
             data: null,
          });
-      }
 
       return NextResponse.json({
          success: true,
          error: null,
-         data: schoolData,
+         data: null,
       });
    } catch (e) {
+      console.log(e);
       return NextResponse.json({
          success: false,
          error: 'خطایی در سرور رخ داده است. لطفا لحظاتی دیگر مجددا تلاش نمایید.',

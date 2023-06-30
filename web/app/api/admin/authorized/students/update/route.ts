@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-import School from '@/schemas/School';
+import Students from '@/schemas/Students';
 import connectMongo from '@/utils/connectMongo';
 
 export async function PATCH(request: NextRequest) {
@@ -9,7 +9,12 @@ export async function PATCH(request: NextRequest) {
       const body = await request.json();
       console.log(body);
 
-      if (body.name === null || body.name === undefined) {
+      if (
+         body.name === null ||
+         body.name === undefined ||
+         body.nationalCode === undefined ||
+         body.nationalCode === undefined
+      ) {
          return NextResponse.json({
             success: false,
             error: 'اطلاعات برای ثبت صحیح نمی باشد.',
@@ -17,22 +22,24 @@ export async function PATCH(request: NextRequest) {
          });
       }
 
-      const schoolData = await School.findOneAndUpdate(
-         { schoolUniqueId: body.schoolUniqueId },
+      const studentData = await Students.findOneAndUpdate(
+         { studentUnique: body.studentUnique },
          {
             $set: {
                name: body.name,
-               latitude: body.latitude,
-               longitude: body.longitude,
+               nationalCode: body.nationalCode,
+               schoolUniqueId: body.schoolUniqueId,
+               driverUnique: body.driverUnique,
+               parentUnique: body.parentUnique,
             },
          },
          { new: true }
       );
 
-      if (!schoolData) {
+      if (!studentData) {
          return NextResponse.json({
             success: false,
-            error: 'مدرسه ای با این شناسه وجود ندارد.',
+            error: 'دانش آموزی ای با این شناسه وجود ندارد.',
             data: null,
          });
       }
@@ -40,7 +47,7 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({
          success: true,
          error: null,
-         data: schoolData,
+         data: studentData,
       });
    } catch (e) {
       return NextResponse.json({

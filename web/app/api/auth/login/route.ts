@@ -10,9 +10,7 @@ const mongoose = require("mongoose");
 export async function POST(request: NextRequest) {
   try {
     await connectMongo();
-    console.log(
-      "Mongoose connection status is: " + mongoose.connection.readyState
-    );
+
     const randomNumber = Math.floor(Math.random() * 1000000)
       .toString()
       .padStart(6, "0");

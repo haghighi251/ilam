@@ -9,20 +9,20 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from 'react';
 
-import AddModal from '@/components/admin/dashboard/schools/AddModal';
-import Row from '@/components/admin/dashboard/schools/TableRows';
+import AddModal from '@/components/admin/dashboard/students/AddModal';
+import Row from '@/components/admin/dashboard/students/TableRows';
 
 const page = () => {
-   const [schools, setSchools] = useState([]);
+   const [students, setStudents] = useState([]);
    const [modalClosed, setModalClosed] = useState(false);
    // To fetch the data and display it after the modal has been closed and the data has been deleted.
    useEffect(() => {
-      fetchSchools();
+      fetchStudents();
    }, [modalClosed]);
 
-   async function fetchSchools() {
+   async function fetchStudents() {
       try {
-         const response = await fetch('/api/admin/authorized/schools/all', {
+         const response = await fetch('/api/admin/authorized/students/all', {
             method: 'GET',
             headers: {
                'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ const page = () => {
          const data = await response.json();
 
          if (response.ok) {
-            setSchools(data.data);
+            setStudents(data.data);
          } else {
             console.error(data.error);
          }
@@ -43,20 +43,29 @@ const page = () => {
 
    function createData(
       name: string,
+      nationalCode: string,
+      studentUnique: string,
       schoolUniqueId: string,
-      latitude: string,
-      longitude: string,
-      cityUnique: string
+      driverUnique: string,
+      parentUnique: string
    ) {
-      return { name, schoolUniqueId, latitude, longitude, cityUnique };
+      return {
+         name,
+         nationalCode,
+         studentUnique,
+         schoolUniqueId,
+         driverUnique,
+         parentUnique,
+      };
    }
-   const rows = schools.map((school) =>
+   const rows = students.map((student) =>
       createData(
-         school.name,
-         school.schoolUniqueId,
-         school.latitude,
-         school.longitude,
-         school.cityUnique
+         student.name,
+         student.nationalCode,
+         student.studentUnique,
+         student.schoolUniqueId,
+         student.driverUnique,
+         student.parentUnique
       )
    );
    function handleModalClose() {
@@ -65,7 +74,7 @@ const page = () => {
    return (
       <div className="w-full my-5">
          <Box sx={{ display: 'flex', justifyContent: 'space-between', my: 3 }}>
-            <div>مدرسه ها</div>
+            <div>دانش آموزان</div>
             <div>
                <AddModal onClose={handleModalClose} />
             </div>
@@ -74,18 +83,18 @@ const page = () => {
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                <TableHead>
                   <TableRow>
-                     <TableCell align="right">نام مدرسه</TableCell>
+                     <TableCell align="right">نام</TableCell>
+                     <TableCell align="right">کد ملی</TableCell>
                      <TableCell align="right">کد یکتا</TableCell>
-                     <TableCell align="right">عرض جغرافیایی (lat)</TableCell>
-                     <TableCell align="right">طول جغرافیایی (lon)</TableCell>
-                     <TableCell align="right">شهر</TableCell>
-                     <TableCell align="right">کد شناسایی شهر</TableCell>
+                     <TableCell align="right">کد مدرسه</TableCell>
+                     <TableCell align="right">کد راننده</TableCell>
+                     <TableCell align="right">کد اولیا</TableCell>
                      <TableCell align="right">عملیات</TableCell>
                   </TableRow>
                </TableHead>
                <TableBody>
                   {rows.map((row) => (
-                     <Row key={row.schoolUniqueId} row={row} />
+                     <Row key={row.studentUnique} row={row} />
                   ))}
                </TableBody>
             </Table>
