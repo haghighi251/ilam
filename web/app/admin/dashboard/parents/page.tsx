@@ -78,7 +78,7 @@ const page = () => {
                </TableHead>
                <TableBody>
                   {rows.map((row) => (
-                     <Row row={row} />
+                     <Row onClose={handleModalClose} key={row.parentUnique} row={row} />
                   ))}
                </TableBody>
             </Table>

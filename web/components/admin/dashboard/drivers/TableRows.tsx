@@ -17,7 +17,7 @@ import UpdateDocModal from './driverDocuments/UpdateModal';
 import UpdateModal from './UpdateModal';
 
 const Row = (props) => {
-   const { row } = props;
+   const { onClose, row } = props;
    const [open, setOpen] = useState(false);
    const [modalClosed, setModalClosed] = useState(false);
 
@@ -159,6 +159,7 @@ const Row = (props) => {
    }
    function handleModalClose() {
       setModalClosed(true);
+      onClose();
    }
    return (
       <React.Fragment>

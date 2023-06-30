@@ -7,12 +7,13 @@ import DeleteModal from './DeleteModal';
 import UpdateModal from './UpdateModal';
 
 const Row = (props) => {
-   const { row } = props;
+   const { onClose, row } = props;
    const [open, setOpen] = useState(false);
    const [modalClosed, setModalClosed] = useState(false);
 
    function handleModalClose() {
       setModalClosed(true);
+      onClose();
    }
    return (
       <React.Fragment>

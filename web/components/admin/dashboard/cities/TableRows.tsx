@@ -17,7 +17,7 @@ import DeleteModal from './DeleteModal';
 import UpdateModal from './UpdateModal';
 
 const Row = (props) => {
-   const { key, row } = props;
+   const { onClose, row } = props;
    const [open, setOpen] = useState(false);
 
    const [cityCoordinates, setCityCoordinates] = useState([]);
@@ -99,6 +99,7 @@ const Row = (props) => {
    }
    function handleModalClose() {
       setModalClosed(true);
+      onClose();
    }
    return (
       <React.Fragment>

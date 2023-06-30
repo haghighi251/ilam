@@ -170,7 +170,7 @@ const AddForm = (props) => {
                         }}
                      />
                   }
-                  label="Label"
+                  label="ادمین"
                />
                <FormControlLabel
                   control={
@@ -181,7 +181,7 @@ const AddForm = (props) => {
                         }}
                      />
                   }
-                  label="Label"
+                  label="راننده"
                />
                <FormControlLabel
                   control={
@@ -192,7 +192,7 @@ const AddForm = (props) => {
                         }}
                      />
                   }
-                  label="Label"
+                  label="اولیا"
                />
                <FormControlLabel
                   control={
@@ -203,7 +203,7 @@ const AddForm = (props) => {
                         }}
                      />
                   }
-                  label="Label"
+                  label="ادمین مدرسه"
                />
                <FormControlLabel
                   control={
@@ -214,7 +214,7 @@ const AddForm = (props) => {
                         }}
                      />
                   }
-                  label="Label"
+                  label="ادمین شهر"
                />
                <FormControlLabel
                   control={
@@ -225,7 +225,7 @@ const AddForm = (props) => {
                         }}
                      />
                   }
-                  label="Label"
+                  label="ادمین استان"
                />
                <FormControlLabel
                   control={
@@ -236,7 +236,7 @@ const AddForm = (props) => {
                         }}
                      />
                   }
-                  label="Label"
+                  label="فعال"
                />
             </FormGroup>
          </Box>

@@ -94,7 +94,7 @@ const page = () => {
                </TableHead>
                <TableBody>
                   {rows.map((row) => (
-                     <Row key={row.studentUnique} row={row} />
+                     <Row onClose={handleModalClose} key={row.studentUnique} row={row} />
                   ))}
                </TableBody>
             </Table>

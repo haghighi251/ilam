@@ -31,17 +31,17 @@ const RightSide = () => {
                </div>
             </div>
          </Link>
-         <Link href={`/admin/dashboard/admins`}>
+         <Link href={`/admin/dashboard/users`}>
             <div
                className={`rightMenuLink ${
-                  isRouteActive('/admin/dashboard/admins')
+                  isRouteActive('/admin/dashboard/users')
                      ? 'rightMenuLinkActive'
                      : ''
                }`}
             >
                <div className="rightMenuLinkInternally">
                   <School sx={{ my: 0.3 }} />
-                  ادمین ها
+                  یوزر ها
                </div>
             </div>
          </Link>
