@@ -1,76 +1,90 @@
-"use client";
-import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+'use client';
+import { Box } from '@mui/material';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import { useEffect, useState } from 'react';
 
-function createData(
-  name: string,
-  unique: number,
-  city: string,
-  school: string,
-  stdents: number,
-  date: string,
-  actions: string
-) {
-  return { name, unique, city, school, stdents, date, actions };
-}
-
-const rows = [
-  createData(
-    "امیر حقیقی",
-    2614589,
-    "شیراز",
-    "مدرسه شماره یک",
-    2,
-    "21 اردیبهشت 1402",
-    "مشاهده"
-  ),
-];
+import AddModal from '@/components/admin/dashboard/parents/AddModal';
+import Row from '@/components/admin/dashboard/parents/TableRows';
 
 const page = () => {
-  return (
-    <div className="w-full my-5">
-      <TableContainer component={Paper}>
-        <Table
-          sx={{ minWidth: 650 }}
-          aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell align="right">نام</TableCell>
-              <TableCell align="right">کد یکتا</TableCell>
-              <TableCell align="right">شهر</TableCell>
-              <TableCell align="right">مدرسه</TableCell>
-              <TableCell align="right">دانش آموزان</TableCell>
-              <TableCell align="right">ثبت نام</TableCell>
-              <TableCell align="right">عملیات</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.name}>
-                <TableCell align="right">{row.name}</TableCell>
-                <TableCell align="right">{row.unique}</TableCell>
-                <TableCell align="right">{row.city}</TableCell>
-                <TableCell align="right">{row.school}</TableCell>
-                <TableCell align="right">{row.stdents}</TableCell>
-                <TableCell align="right">{row.date}</TableCell>
-                <TableCell
-                  align="right"
-                  className="text-sky-500 font-semibold">
-                  {row.actions}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
-  );
+   const [parents, setParents] = useState([]);
+   const [modalClosed, setModalClosed] = useState(false);
+   // To fetch the data and display it after the modal has been closed and the data has been deleted.
+   useEffect(() => {
+      fetchParents();
+   }, [modalClosed]);
+
+   async function fetchParents() {
+      try {
+         const response = await fetch('/api/admin/authorized/parents/all', {
+            method: 'GET',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+         });
+
+         const data = await response.json();
+
+         if (response.ok) {
+            setParents(data.data);
+         } else {
+            console.error(data.error);
+         }
+      } catch (error) {
+         console.error(error);
+      }
+   }
+
+   function createData(
+      userUnique: string,
+      parentUnique: string,
+      studentUnique: string
+   ) {
+      return {
+         userUnique,
+         parentUnique,
+         studentUnique,
+      };
+   }
+   const rows = parents.map((parent) =>
+      createData(parent.userUnique, parent.parentUnique, parent.studentUnique)
+   );
+   function handleModalClose() {
+      setModalClosed(true);
+   }
+   return (
+      <div className="w-full my-5">
+         <Box sx={{ display: 'flex', justifyContent: 'space-between', my: 3 }}>
+            <div>اولیا</div>
+            <div>
+               <AddModal onClose={handleModalClose} />
+            </div>
+         </Box>
+         <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+               <TableHead>
+                  <TableRow>
+                     <TableCell align="right">کد کاربری</TableCell>
+                     <TableCell align="right">کد یکتا ولی</TableCell>
+                     <TableCell align="right">کد یکتا دانش آموز</TableCell>
+                     <TableCell align="right">عملیات</TableCell>
+                  </TableRow>
+               </TableHead>
+               <TableBody>
+                  {rows.map((row) => (
+                     <Row row={row} />
+                  ))}
+               </TableBody>
+            </Table>
+         </TableContainer>
+      </div>
+   );
 };
 
 export default page;
