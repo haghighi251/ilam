@@ -35,10 +35,6 @@ const UsersSchema = new Schema<IUsersSchema>(
          required: false,
          default: null,
       },
-      salt: {
-         type: String,
-         required: false,
-      },
       isAdmin: {
          type: Boolean,
          default: false,

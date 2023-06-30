@@ -1,24 +1,19 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-import Users from '@/schemas/Users';
+import School from '@/schemas/School';
 import connectMongo from '@/utils/connectMongo';
 
 export async function GET(request: NextRequest, { params }) {
    try {
       await connectMongo();
-      // Fetch user based on uniqueCode
-      const userDataFromDB = await Users.findOne({ uniqueCode: params.id });
-      if (!userDataFromDB) {
-         return NextResponse.json({
-            success: false,
-            error: 'کاربری با این مشخصات یافت نشد.',
-            data: null,
-         });
-      }
+      // Fetch the School
+      const schoolDataFromDB = await School.findOne({
+         schoolUniqueId: params.id,
+      });
       return NextResponse.json({
          success: true,
          error: null,
-         data: userDataFromDB,
+         data: schoolDataFromDB,
       });
    } catch (e) {
       console.error(e);

@@ -22,16 +22,18 @@ const Row = (props) => {
    const [modalClosed, setModalClosed] = useState(false);
 
    const [driverDocuments, setDriverDocuments] = useState([]);
+   const [driverStudents, setDriverStudents] = useState([]);
    const [schoolName, setSchoolName] = useState('');
    const [name, setName] = useState('');
 
    // To fetch the data and display it after the modal has been closed and the data has been deleted.
    useEffect(() => {
+      fetchDriverStudents();
       fetchDriverDocuments();
       fetchSchool();
       fetchName();
    }, [modalClosed]);
-
+   // Create the data for the documents table.
    async function fetchDriverDocuments() {
       try {
          const response = await fetch(
@@ -55,8 +57,7 @@ const Row = (props) => {
          console.error(error);
       }
    }
-
-   function createData(
+   function createDocumentData(
       driverDocumentUnique: string,
       driverUnique: string,
       documentName: string,
@@ -70,13 +71,52 @@ const Row = (props) => {
       };
    }
    const documentsRows = driverDocuments.map((item) =>
-      createData(
+      createDocumentData(
          item.driverDocumentUnique,
          item.driverUnique,
          item.documentName,
          item.file
       )
    );
+   // Create the data for the students table.
+   async function fetchDriverStudents() {
+      try {
+         const response = await fetch(
+            `/api/admin/authorized/students/filter/driver/${row.driverUniqueId}`,
+            {
+               method: 'GET',
+               headers: {
+                  'Content-Type': 'application/json',
+               },
+            }
+         );
+
+         const data = await response.json();
+
+         if (response.ok) {
+            setDriverStudents(data.data);
+         } else {
+            console.error(data.error);
+         }
+      } catch (error) {
+         console.error(error);
+      }
+   }
+   function createStudentsData(
+      name: string,
+      nationalCode: string,
+      studentUnique: string
+   ) {
+      return {
+         name,
+         nationalCode,
+         studentUnique,
+      };
+   }
+   const studentsRows = driverStudents.map((item) =>
+      createStudentsData(item.name, item.nationalCode, item.studentUnique)
+   );
+
    // To fetch school name based on it ID
    async function fetchSchool() {
       try {
@@ -214,6 +254,41 @@ const Row = (props) => {
                                        documentName={item.documentName}
                                     />
                                  </Box>
+                              </TableRow>
+                           ))}
+                        </TableBody>
+                     </Table>
+                  </Box>
+                  <Box sx={{ margin: 1 }}>
+                     <Box
+                        sx={{
+                           display: 'flex',
+                           justifyContent: 'space-between',
+                           my: 3,
+                        }}
+                     >
+                        <div>دانش آموزان</div>
+                     </Box>
+                     <Table size="small" aria-label="purchases">
+                        <TableHead>
+                           <TableRow>
+                              <TableCell align="right">نام دانش آموز</TableCell>
+                              <TableCell align="right">کد ملی</TableCell>
+                              <TableCell align="right">کد یکتا</TableCell>
+                           </TableRow>
+                        </TableHead>
+                        <TableBody>
+                           {studentsRows.map((item) => (
+                              <TableRow key={item.nationalCode}>
+                                 <TableCell align="right">
+                                    {item.name}
+                                 </TableCell>
+                                 <TableCell align="right">
+                                    {item.nationalCode}
+                                 </TableCell>
+                                 <TableCell align="right">
+                                    {item.studentUnique}
+                                 </TableCell>
                               </TableRow>
                            ))}
                         </TableBody>

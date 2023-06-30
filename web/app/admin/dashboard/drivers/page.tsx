@@ -43,13 +43,13 @@ const page = () => {
 
    function createData(
       name: string,
-      driverUnique: string,
+      driverUniqueId: string,
       schoolUniqueId: string,
       score: string
    ) {
       return {
          name,
-         driverUnique,
+         driverUniqueId,
          schoolUniqueId,
          score,
       };
@@ -57,7 +57,7 @@ const page = () => {
    const rows = drivers.map((driver) =>
       createData(
          driver.name,
-         driver.driverUnique,
+         driver.driverUniqueId,
          driver.schoolUniqueId,
          driver.score
       )
