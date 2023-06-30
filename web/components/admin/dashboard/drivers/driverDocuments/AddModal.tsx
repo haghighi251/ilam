@@ -18,10 +18,13 @@ const style = {
    boxShadow: 24,
    p: 4,
 };
-interface AddModalProps {
+interface AddDocumentModalProps {
    onClose: () => void;
 }
-const AddModal: React.FC<AddModalProps> = ({ onClose, cityUnique }) => {
+const AddDocumentModal: React.FC<AddDocumentModalProps> = ({
+   onClose,
+   driverUniqueId,
+}) => {
    const [open, setOpen] = React.useState(false);
    const handleOpen = () => setOpen(true);
    const handleClose = () => {
@@ -46,14 +49,14 @@ const AddModal: React.FC<AddModalProps> = ({ onClose, cityUnique }) => {
          >
             <Box sx={style}>
                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  ثبت مختصات جدید
+                  ثبت مدرک
                </Typography>
 
-               <AddForm handleClose={handleClose} cityUnique={cityUnique} />
+               <AddForm handleClose={handleClose} driverUniqueId={driverUniqueId} />
             </Box>
          </Modal>
       </div>
    );
 };
 
-export default AddModal;
+export default AddDocumentModal;

@@ -1,61 +1,57 @@
-import { NextResponse } from "next/server";
-import { type NextRequest } from "next/server";
-import connectMongo from "@/utils/connectMongo";
-import bcrypt from "bcryptjs";
-import CityCoordinates from "@/schemas/CityCoordinates";
-import { ICityCoordinatesSchema } from "@/utils/types";
+import { NextResponse, type NextRequest } from 'next/server';
+
+import DriversDocuments from '@/schemas/DriversDocuments';
+import connectMongo from '@/utils/connectMongo';
 
 export async function PATCH(request: NextRequest) {
-  try {
-    await connectMongo();
-    const body = await request.json();
-    console.log(body)
+   try {
+      await connectMongo();
+      const body = await request.json();
 
-    if (
-      body.cityCoordinateUnique === null ||
-      body.cityCoordinateUnique === undefined ||
-      body.cityUnique === null ||
-      body.cityUnique === undefined ||
-      body.latitude === null ||
-      body.latitude === undefined ||
-      body.longitude === null ||
-      body.longitude === undefined
-    ) {
+      if (
+         body.driverDocumentUnique === null ||
+         body.driverDocumentUnique === undefined ||
+         body.documentName === null ||
+         body.documentName === undefined ||
+         body.file === null ||
+         body.file === undefined
+      ) {
+         return NextResponse.json({
+            success: false,
+            error: 'اطلاعات برای ثبت صحیح نمی باشد.',
+            data: null,
+         });
+      }
+
+      const driverDocumentData = await DriversDocuments.findOneAndUpdate(
+         { driverDocumentUnique: body.driverDocumentUnique },
+         {
+            $set: {
+               documentName: body.documentName,
+               file: body.file,
+            },
+         },
+         { new: true }
+      );
+
+      if (!driverDocumentData) {
+         return NextResponse.json({
+            success: false,
+            error: 'مدرکی با این شناسه وجود ندارد.',
+            data: null,
+         });
+      }
+
       return NextResponse.json({
-        success: false,
-        error: "اطلاعات برای ثبت صحیح نمی باشد.",
-        data: null,
+         success: true,
+         error: null,
+         data: driverDocumentData,
       });
-    }
-
-    const cityCoordinateData = await CityCoordinates.findOneAndUpdate(
-      { cityCoordinateUnique: body.cityCoordinateUnique },
-      { $set: { 
-        latitude: body.latitude, 
-        longitude: body.longitude,
-        rowNumber: body.rowNumber,
-      } },
-      { new: true }
-    );
-
-    if (!cityCoordinateData) {
+   } catch (e) {
       return NextResponse.json({
-        success: false,
-        error: "مختصاتی با این شناسه وجود ندارد.",
-        data: null,
+         success: false,
+         error: 'خطایی در سرور رخ داده است. لطفا لحظاتی دیگر مجددا تلاش نمایید.',
+         data: null,
       });
-    }
-
-    return NextResponse.json({
-      success: true,
-      error: null,
-      data: cityCoordinateData,
-    });
-  } catch (e) {
-    return NextResponse.json({
-      success: false,
-      error: "خطایی در سرور رخ داده است. لطفا لحظاتی دیگر مجددا تلاش نمایید.",
-      data: null,
-    });
-  }
+   }
 }

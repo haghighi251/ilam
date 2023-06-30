@@ -46,7 +46,7 @@ const AddModal: React.FC<AddModalProps> = ({ onClose }) => {
          >
             <Box sx={style}>
                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  ثبت استان جدید
+                  ثبت راننده جدید
                </Typography>
 
                <AddForm handleClose={handleClose} />

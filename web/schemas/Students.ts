@@ -1,34 +1,37 @@
-import { Schema, model, models } from "mongoose";
-import { IStudentsSchema } from "@/utils/types";
+import { Schema, model, models } from 'mongoose';
+
+import { IStudentsSchema } from '@/utils/types';
 
 const StudentsSchema = new Schema<IStudentsSchema>({
-  studentUnique: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  schoolUniqueId: [
-    {
+   userUniqueCode: {
+      type: String,
+      required: true,
+   },
+
+   studentUnique: {
       type: String,
       required: true,
       unique: true,
-    },
-  ],
-  driverUnique: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  parentUnique: [
-    {
+   },
+   schoolUniqueId: {
       type: String,
       required: true,
       unique: true,
-    },
-  ],
+   },
+
+   driverUnique: {
+      type: String,
+      required: true,
+      unique: true,
+   },
+   parentUnique: {
+      type: String,
+      required: true,
+      unique: true,
+   },
 });
 
 const Students =
-  models.Students || model<IStudentsSchema>("Students", StudentsSchema);
+   models.Students || model<IStudentsSchema>('Students', StudentsSchema);
 
 export default Students;

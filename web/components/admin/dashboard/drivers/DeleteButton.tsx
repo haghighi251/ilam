@@ -2,20 +2,19 @@ import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import LoadingButton from '@mui/lab/LoadingButton';
 import * as React from 'react';
 
-const DeleteButton = ({ handleClose, cityName, cityUnique }) => {
+const DeleteButton = ({ handleClose, name, driverUniqueId }) => {
    // Component's states
    const [loading, setLoading] = React.useState<boolean>(false);
    const [error, setError] = React.useState<string | null>('');
    const [successMessage, setSuccessMessage] = React.useState<string>('');
 
    const handleDelete = async () => {
-      console.log(provinceUnique);
       let errorMsg = null;
       if (
-         cityName === null ||
-         cityName === undefined ||
-         cityUnique === null ||
-         cityUnique === undefined
+         name === null ||
+         name === undefined ||
+         driverUniqueId === null ||
+         driverUniqueId === undefined
       ) {
          errorMsg = 'خطا در ارسال اطلاعات';
          setError(errorMsg);
@@ -27,7 +26,7 @@ const DeleteButton = ({ handleClose, cityName, cityUnique }) => {
          try {
             // The DELETE method should be handled differently than the POST and PATCH methods.
             const response = await fetch(
-               `/api/admin/authorized/cities/delete/${cityUnique}`,
+               `/api/admin/authorized/drivers/delete/${driverUniqueId}`,
                {
                   method: 'DELETE',
                   headers: { 'Content-Type': 'application/json' },
@@ -37,7 +36,7 @@ const DeleteButton = ({ handleClose, cityName, cityUnique }) => {
             const responseData = await response.json();
             console.log(responseData);
             if (responseData.success) {
-               setSuccessMessage('شهر با موفقیت حذف شد.');
+               setSuccessMessage('راننده با موفقیت حذف شد.');
                handleClose(); // refresh the page data if the selected data deleted successfully.
             } else {
                setError(responseData.error);

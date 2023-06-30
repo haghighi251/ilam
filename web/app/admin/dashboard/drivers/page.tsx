@@ -78,8 +78,9 @@ const page = () => {
                <TableHead>
                   <TableRow>
                      <TableCell />
-                     <TableCell align="right">نام راننده</TableCell>
-                     <TableCell align="right">کد شناسایی</TableCell>
+                     <TableCell align="right">کد راننده</TableCell>
+                     <TableCell align="right">نام کاربر</TableCell>
+                     <TableCell align="right">کد کاربر</TableCell>
                      <TableCell align="right">نام مدرسه</TableCell>
                      <TableCell align="right">کد مدرسه</TableCell>
                      <TableCell align="right">امتیاز</TableCell>

@@ -1,50 +1,50 @@
-import { NextResponse } from "next/server";
-import { type NextRequest } from "next/server";
-import connectMongo from "@/utils/connectMongo";
-import bcrypt from "bcryptjs";
-import Cities from "@/schemas/Cities";
-import { ICitiesSchema } from "@/utils/types";
+import { NextResponse, type NextRequest } from 'next/server';
+
+import Drivers from '@/schemas/Drivers';
+import connectMongo from '@/utils/connectMongo';
 
 export async function PATCH(request: NextRequest) {
-  try {
-    await connectMongo();
-    const body = await request.json();
-    console.log(body)
+   try {
+      await connectMongo();
+      const body = await request.json();
 
-    if (
-      body.cityName === null || body.cityName === undefined || body.cityUnique === null || body.cityUnique === undefined 
-    ) {
+      if (
+         body.driverUniqueId === null ||
+         body.driverUniqueId === undefined ||
+         body.score === null ||
+         body.score === undefined
+      ) {
+         return NextResponse.json({
+            success: false,
+            error: 'اطلاعات برای ثبت صحیح نمی باشد.',
+            data: null,
+         });
+      }
+
+      const driverData = await Drivers.findOneAndUpdate(
+         { uniqueCode: body.driverUniqueId },
+         { $set: { score: body.score } },
+         { new: true }
+      );
+
+      if (!driverData) {
+         return NextResponse.json({
+            success: false,
+            error: 'مشخصات راننده تغییر نکرد.',
+            data: null,
+         });
+      }
+
       return NextResponse.json({
-        success: false,
-        error: "اطلاعات برای ثبت صحیح نمی باشد.",
-        data: null,
+         success: true,
+         error: null,
+         data: driverData,
       });
-    }
-
-    const cityData = await Cities.findOneAndUpdate(
-      { cityUnique: body.cityUnique },
-      { $set: { cityName: body.city, provinceUnique: body.provinceUnique, speedMin: body.speedMin, speedMax: body.speedMax } },
-      { new: true }
-    );
-
-    if (!cityData) {
+   } catch (e) {
       return NextResponse.json({
-        success: false,
-        error: "استانی با این شناسه وجود ندارد.",
-        data: null,
+         success: false,
+         error: 'خطایی در سرور رخ داده است. لطفا لحظاتی دیگر مجددا تلاش نمایید.',
+         data: null,
       });
-    }
-
-    return NextResponse.json({
-      success: true,
-      error: null,
-      data: cityData,
-    });
-  } catch (e) {
-    return NextResponse.json({
-      success: false,
-      error: "خطایی در سرور رخ داده است. لطفا لحظاتی دیگر مجددا تلاش نمایید.",
-      data: null,
-    });
-  }
+   }
 }

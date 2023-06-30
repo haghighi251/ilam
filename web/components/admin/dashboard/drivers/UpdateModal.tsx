@@ -23,11 +23,8 @@ interface UpdateModalProps {
 }
 const UpdateModal: React.FC<UpdateModalProps> = ({
    onClose,
-   cityName,
-   cityUnique,
-   provinceUnique,
-   speedMin,
-   speedMax,
+   driverUniqueId,
+   score,
 }) => {
    const [open, setOpen] = React.useState(false);
    const handleOpen = () => setOpen(true);
@@ -53,16 +50,13 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
          >
             <Box sx={style}>
                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  ویرایش شهر
+                  ویرایش راننده
                </Typography>
 
                <UpdateForm
                   handleClose={handleClose}
-                  cityName={cityName}
-                  cityUnique={cityUnique}
-                  provinceUnique={provinceUnique}
-                  speedMin={speedMin}
-                  speedMax={speedMax}
+                  driverUniqueId={driverUniqueId}
+                  score={score}
                />
             </Box>
          </Modal>

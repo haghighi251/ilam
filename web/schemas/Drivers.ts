@@ -3,22 +3,19 @@ import { Schema, model, models } from 'mongoose';
 import { IDriversSchema } from '@/utils/types';
 
 const DriversSchema = new Schema<IDriversSchema>({
-   name: {
+   userUniqueCode: {
       type: String,
       required: true,
    },
-   driverUnique: {
+   driverUniqueId: {
       type: String,
       required: true,
       unique: true,
    },
-   schoolUniqueId: [
-      {
-         type: String,
-         required: true,
-         unique: true,
-      },
-   ],
+   schoolUniqueId: {
+      type: String,
+      required: true,
+   },
    score: {
       type: String,
       default: null,

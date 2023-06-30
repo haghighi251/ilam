@@ -18,12 +18,13 @@ const style = {
    boxShadow: 24,
    p: 4,
 };
-interface DeleteCoorModalProps {
+interface DeleteDocModalProps {
    onClose: () => void;
 }
-const DeleteCoorModal: React.FC<DeleteCoorModalProps> = ({
+const DeleteDocModal: React.FC<DeleteDocModalProps> = ({
    onClose,
-   cityCoordinateUnique,
+   driverDocumentUnique,
+   documentName,
 }) => {
    const [open, setOpen] = React.useState(false);
    const handleOpen = () => setOpen(true);
@@ -52,7 +53,7 @@ const DeleteCoorModal: React.FC<DeleteCoorModalProps> = ({
          >
             <Box sx={style}>
                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  آیا از حذف این مختصات اطمینان دارید؟
+                  آیا از حذف {documentName} اطمینان دارید؟
                </Typography>
                <Box
                   sx={{
@@ -63,7 +64,7 @@ const DeleteCoorModal: React.FC<DeleteCoorModalProps> = ({
                >
                   <DeleteButton
                      handleClose={handleClose}
-                     cityCoordinateUnique={cityCoordinateUnique}
+                     driverDocumentUnique={driverDocumentUnique}
                   />
                   <Button variant="contained" onClick={handleClose}>
                      خیر
@@ -75,4 +76,4 @@ const DeleteCoorModal: React.FC<DeleteCoorModalProps> = ({
    );
 };
 
-export default DeleteCoorModal;
+export default DeleteDocModal;

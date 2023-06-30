@@ -1,50 +1,48 @@
-import { NextResponse } from "next/server";
-import { type NextRequest } from "next/server";
-import connectMongo from "@/utils/connectMongo";
-import Cities from "@/schemas/Cities";
-import { ICitiesSchema } from "@/utils/types";
-import CityCoordinates from "@/schemas/CityCoordinates";
+import { NextResponse, type NextRequest } from 'next/server';
 
-export async function DELETE(request: NextRequest, {params}) {
-  try {
-    await connectMongo();
-    // const body = await request.json();
-    console.log(params);
+import Drivers from '@/schemas/Drivers';
+import Users from '@/schemas/Users';
+import connectMongo from '@/utils/connectMongo';
 
-    if (params.id === null || params.id === undefined)
-      return NextResponse.json({
-        success: false,
-        error: "برای حذف صحیح، کد شناسایی یا نام استان ارسال نشده است.",
-        data: null,
+export async function DELETE(request: NextRequest, { params }) {
+   try {
+      await connectMongo();
+
+      if (params.id === null || params.id === undefined)
+         return NextResponse.json({
+            success: false,
+            error: 'برای حذف صحیح، کد شناسایی راننده ارسال نشده است.',
+            data: null,
+         });
+
+      // Find the document to delete by id
+      const driverDataFromDB = await Drivers.findOneAndDelete({
+         driverUniqueId: params.id,
       });
 
-    // Find the document to delete by cityUnique
-    const cityDataFromDB = await Cities.findOneAndDelete({
-      cityUnique: params.id,
-    });
-    
-    if (!cityDataFromDB)
+      if (!driverDataFromDB)
+         return NextResponse.json({
+            success: false,
+            error: 'راننده ای با این کد شناسایی یافت نشد.',
+            data: null,
+         });
+      else {
+         await Users.findOneAndUpdate(
+            { uniqueCode: driverDataFromDB.userUniqueCode },
+            { $set: { status: false } },
+            { new: true }
+         );
+      }
       return NextResponse.json({
-        success: false,
-        error: "شهری با این کد شناسایی یافت نشد.",
-        data: null,
+         success: true,
+         error: null,
+         data: null,
       });
-    else {
-      // Find the coordinate records relating to the city
-      await CityCoordinates.deleteMany({ "cityUnique" : params.id });
-    }
-
-    return NextResponse.json({
-      success: true,
-      error: null,
-      data: null,
-    });
-  } catch (e) {
-    console.log(e);
-    return NextResponse.json({
-      success: false,
-      error: "خطایی در سرور رخ داده است. لطفا لحظاتی دیگر مجددا تلاش نمایید.",
-      data: null,
-    });
-  }
+   } catch (e) {
+      return NextResponse.json({
+         success: false,
+         error: 'خطایی در سرور رخ داده است. لطفا لحظاتی دیگر مجددا تلاش نمایید.',
+         data: null,
+      });
+   }
 }

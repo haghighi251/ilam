@@ -2,7 +2,7 @@ import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import LoadingButton from '@mui/lab/LoadingButton';
 import * as React from 'react';
 
-const DeleteButton = ({ handleClose, cityCoordinateUnique }) => {
+const DeleteButton = ({ handleClose, driverDocumentUnique }) => {
    // Component's states
    const [loading, setLoading] = React.useState<boolean>(false);
    const [error, setError] = React.useState<string | null>('');
@@ -10,7 +10,7 @@ const DeleteButton = ({ handleClose, cityCoordinateUnique }) => {
 
    const handleDelete = async () => {
       let errorMsg = null;
-      if (cityCoordinateUnique === null || cityCoordinateUnique === undefined) {
+      if (driverDocumentUnique === null || driverDocumentUnique === undefined) {
          errorMsg = 'خطا در ارسال اطلاعات';
          setError(errorMsg);
       }
@@ -21,7 +21,7 @@ const DeleteButton = ({ handleClose, cityCoordinateUnique }) => {
          try {
             // The DELETE method should be handled differently than the POST and PATCH methods.
             const response = await fetch(
-               `/api/admin/authorized/cities/coordinates/delete/${cityCoordinateUnique}`,
+               `/api/admin/authorized/drivers/documents/delete/${driverDocumentUnique}`,
                {
                   method: 'DELETE',
                   headers: { 'Content-Type': 'application/json' },
@@ -31,7 +31,7 @@ const DeleteButton = ({ handleClose, cityCoordinateUnique }) => {
             const responseData = await response.json();
             console.log(responseData);
             if (responseData.success) {
-               setSuccessMessage('مختصات با موفقیت حذف شد.');
+               setSuccessMessage('مدرک با موفقیت حذف شد.');
                handleClose(); // refresh the page data if the selected data deleted successfully.
             } else {
                setError(responseData.error);

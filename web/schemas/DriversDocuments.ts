@@ -9,7 +9,7 @@ const DriversDocumentsSchema = new Schema<IDriversDocumentsSchema>(
          required: true,
          unique: true,
       },
-      driverUnique: {
+      driverUniqueId: {
          type: String,
          required: true,
       },

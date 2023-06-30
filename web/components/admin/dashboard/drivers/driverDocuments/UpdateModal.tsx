@@ -18,15 +18,14 @@ const style = {
    boxShadow: 24,
    p: 4,
 };
-interface UpdateCoorModalProps {
+interface UpdateDocModalProps {
    onClose: () => void;
 }
-const UpdateCoorModal: React.FC<UpdateCoorModalProps> = ({
+const UpdateDocModal: React.FC<UpdateDocModalProps> = ({
    onClose,
-   cityCoordinateUnique,
-   latitude,
-   longitude,
-   rowNumber,
+   driverDocumentUnique,
+   documentName,
+   file,
 }) => {
    const [open, setOpen] = React.useState(false);
    const handleOpen = () => setOpen(true);
@@ -52,15 +51,14 @@ const UpdateCoorModal: React.FC<UpdateCoorModalProps> = ({
          >
             <Box sx={style}>
                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  ویرایش مختصات
+                  ویرایش مدرک
                </Typography>
 
                <UpdateForm
                   handleClose={handleClose}
-                  cityCoordinateUnique={cityCoordinateUnique}
-                  latitude={latitude}
-                  longitude={longitude}
-                  rowNumber={rowNumber}
+                  driverDocumentUnique={driverDocumentUnique}
+                  documentName={documentName}
+                  file={file}
                />
             </Box>
          </Modal>
@@ -68,4 +66,4 @@ const UpdateCoorModal: React.FC<UpdateCoorModalProps> = ({
    );
 };
 
-export default UpdateCoorModal;
+export default UpdateDocModal;

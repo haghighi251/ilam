@@ -5,9 +5,10 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 
+import FilePicker from '@/components/general/FilePicker';
 import Loading from '@/components/loading';
 
-const AddForm = (props: { handleClose: () => void; cityUnique: any }) => {
+const AddForm = (props: { handleClose: () => void; driverUniqueId: any }) => {
    // Use the handleClose function as needed
    const handleFormClose = () => {
       // Perform any necessary logic
@@ -18,19 +19,18 @@ const AddForm = (props: { handleClose: () => void; cityUnique: any }) => {
    const [error, setError] = useState<string | null>('');
    const [successMessage, setSuccessMessage] = useState<string>('');
    // Form inputs
-   const [latitude, setLatitude] = useState<string>('');
-   const [longitude, setLongitude] = useState<string>('');
-   const [rowNumber, setRowNumber] = useState<string>('');
+   const [documentName, setDocumentName] = useState<string>('');
+   const [file, setFile] = useState<string>('');
 
    const handleSubmit = async () => {
       let errorMsg = null;
       if (
-         latitude === null ||
-         latitude === undefined ||
-         longitude === null ||
-         longitude === undefined
+         documentName === null ||
+         documentName === undefined ||
+         file === null ||
+         file === undefined
       )
-         errorMsg = 'لطفا طول و عرض جغرافیایی را وارد نمایید.';
+         errorMsg = 'لطفا تمامی فیلد ها را پر کنید.';
       setError(errorMsg);
 
       if (errorMsg === null) {
@@ -38,25 +38,23 @@ const AddForm = (props: { handleClose: () => void; cityUnique: any }) => {
          setError(null);
          try {
             const response = await fetch(
-               '/api/admin/authorized/cities/coordinates/add',
+               '/api/admin/authorized/drivers/documents/add',
                {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({
-                     cityUnique: props.cityUnique,
-                     latitude: latitude,
-                     longitude: longitude,
-                     rowNumber: rowNumber,
+                     driverUniqueId: props.driverUniqueId,
+                     documentName: documentName,
+                     file: file,
                   }),
                }
             );
 
             const responseData = await response.json();
             if (responseData.success) {
-               setSuccessMessage('مختصات با موفقیت ثبت شد.');
-               setLatitude('');
-               setLongitude('');
-               setRowNumber('');
+               setSuccessMessage('مدرک با موفقیت ثبت شد.');
+               setDocumentName('');
+               setFile('');
 
                handleFormClose(); // Close the modal if desired
             } else {
@@ -78,31 +76,14 @@ const AddForm = (props: { handleClose: () => void; cityUnique: any }) => {
          <Box className="mb-4">
             <TextField
                id="input-with-sx"
-               label="عرض جغرافیایی (Lat)"
+               label="نام مدرک"
                variant="standard"
-               value={latitude}
-               name="usernameOrEmail"
-               onChange={(e) => setLatitude(e.target.value)}
+               value={documentName}
+               name="documentName"
+               onChange={(e) => setDocumentName(e.target.value)}
                required
             />
-            <TextField
-               id="input-with-sx"
-               label="طول جغرافیایی (Lon)"
-               variant="standard"
-               value={longitude}
-               name="usernameOrEmail"
-               onChange={(e) => setLongitude(e.target.value)}
-               required
-            />
-            <TextField
-               id="input-with-sx"
-               label="شماره ستون"
-               variant="standard"
-               value={rowNumber}
-               name="usernameOrEmail"
-               onChange={(e) => setRowNumber(e.target.value)}
-               required
-            />
+            <FilePicker file={file} setFile={setFile} />
          </Box>
          {error && (
             <Alert severity="error" className="mb-3 md:mb-6">

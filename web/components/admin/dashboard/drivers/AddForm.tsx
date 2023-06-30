@@ -21,37 +21,40 @@ const AddForm = (props) => {
    const [loading, setLoading] = useState<boolean>(false);
    const [error, setError] = useState<string | null>('');
    const [successMessage, setSuccessMessage] = useState<string>('');
-   const [provinces, setProvinces] = useState([]);
-   const [cityName, setCityName] = useState<string>('');
-   const [speedMin, setSpeedMin] = useState<string>('');
-   const [speedMax, setSpeedMax] = useState<string>('');
-   const [provinceUnique, setProvinceUnique] = useState<string>('');
+
+   const [schools, setSchools] = useState([]);
+   const [mobile, setMobile] = useState<string>('');
+   const [schoolUniqueId, setSchoolUniqueId] = useState<string>('');
 
    const handleSubmit = async () => {
       let errorMsg = null;
-      if (cityName === null || cityName === undefined)
-         errorMsg = 'لطفا نام شهر را وارد نمایید.';
+      if (
+         mobile === null ||
+         mobile === undefined ||
+         schoolUniqueId === null ||
+         schoolUniqueId === undefined
+      )
+         errorMsg = 'لطفا نام راننده و مدرسه را وارد نمایید.';
       setError(errorMsg);
 
       if (errorMsg === null) {
          setLoading(true);
          setError(null);
          try {
-            const response = await fetch('/api/admin/authorized/cities/add', {
+            const response = await fetch('/api/admin/authorized/school/add', {
                method: 'POST',
                headers: { 'Content-Type': 'application/json' },
                body: JSON.stringify({
-                  cityName: cityName,
-                  provinceUnique: provinceUnique,
-                  speedMin: speedMin,
-                  speedMax: speedMax,
+                  mobile: mobile,
+                  schoolUniqueId: schoolUniqueId,
                }),
             });
 
             const responseData = await response.json();
             if (responseData.success) {
-               setSuccessMessage('شهر با موفقیت ثبت شد.');
-               setCityName('');
+               setSuccessMessage('راننده با موفقیت ثبت شد.');
+               setMobile('');
+               setSchoolUniqueId('');
                handleFormClose(); // Close the modal if desired
             } else {
                setError(responseData.error);
@@ -66,9 +69,9 @@ const AddForm = (props) => {
       }
    };
 
-   async function fetchProvinces() {
+   async function fetchSchools() {
       try {
-         const response = await fetch('/api/admin/authorized/provinces/all', {
+         const response = await fetch('/api/admin/authorized/schools/all', {
             method: 'GET',
             headers: {
                'Content-Type': 'application/json',
@@ -78,7 +81,7 @@ const AddForm = (props) => {
          const data = await response.json();
 
          if (response.ok) {
-            setProvinces(data.data);
+            setSchools(data.data);
          } else {
             console.error(data.error);
          }
@@ -87,11 +90,11 @@ const AddForm = (props) => {
       }
    }
    useEffect(() => {
-      fetchProvinces();
+      fetchSchools();
    }, []);
 
-   const selectProvince = (event: SelectChangeEvent) => {
-      setProvinceUnique(event.target.value as string);
+   const selectSchool = (event: SelectChangeEvent) => {
+      setSchoolUniqueId(event.target.value as string);
    };
    return (
       <div>
@@ -99,47 +102,29 @@ const AddForm = (props) => {
          <Box className="mb-4">
             <TextField
                id="input-with-sx"
-               label="نام شهر"
+               label="موبایل"
                variant="standard"
-               value={cityName}
-               name="usernameOrEmail"
-               onChange={(e) => setCityName(e.target.value)}
+               value={mobile}
+               name="mobile"
+               onChange={(e) => setMobile(e.target.value)}
                required
             />
             <FormControl fullWidth>
-               <InputLabel id="demo-simple-select-label">استان</InputLabel>
+               <InputLabel id="demo-simple-select-label">مدرسه</InputLabel>
                <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
-                  value={provinceUnique}
-                  label="استان"
-                  onChange={selectProvince}
+                  value={schoolUniqueId}
+                  label="مدرسه"
+                  onChange={selectSchool}
                >
-                  {provinces.map((item) => (
-                     <MenuItem value={item.provinceUnique}>
-                        {item.provinceName}
+                  {schools.map((item) => (
+                     <MenuItem value={item.schoolUniqueId}>
+                        {item.name}
                      </MenuItem>
                   ))}
                </Select>
             </FormControl>
-            <TextField
-               id="input-with-sx"
-               label="حداقل سرعت"
-               variant="standard"
-               value={speedMin}
-               name="usernameOrEmail"
-               onChange={(e) => setSpeedMin(e.target.value)}
-               required
-            />
-            <TextField
-               id="input-with-sx"
-               label="حداکثر سرعت"
-               variant="standard"
-               value={speedMax}
-               name="usernameOrEmail"
-               onChange={(e) => setSpeedMax(e.target.value)}
-               required
-            />
          </Box>
          {error && (
             <Alert severity="error" className="mb-3 md:mb-6">
