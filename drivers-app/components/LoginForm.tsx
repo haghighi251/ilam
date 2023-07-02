@@ -1,5 +1,5 @@
-import { Alert, Button, FormControl, Input, Text } from "native-base";
-import React, { ChangeEvent, FormEvent } from "react";
+import { Alert, Button, FormControl, HStack, Input, Text, VStack } from "native-base";
+import React, { FormEvent } from "react";
 
 interface LoginFormProps {
   mobile: string;
@@ -16,8 +16,8 @@ const LoginForm: React.FC<LoginFormProps> = ({
   setMobileChanges,
   handleSubmit,
 }) => {
-  const handleMobileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setMobileChanges(e.target.value);
+  const handleMobileChange = (text) => {
+    setMobileChanges(text);
   };
 
   const handleFormSubmit = (e: FormEvent<HTMLButtonElement>) => {
@@ -49,12 +49,19 @@ const LoginForm: React.FC<LoginFormProps> = ({
         keyboardType="numeric"
         value={mobile}
         name="mobile"
-        onChange={handleMobileChange}
+        onChangeText={(text) => handleMobileChange(text)}
         required
       />
       {error && (
-        <Alert severity="error" className="mb-3 md:mb-6">
-          {error}
+        <Alert w="100%" status={error} px="5" mt="5">
+          <VStack space={2} flexShrink={1} w="100%">
+            <HStack flexShrink={1} space={0} justifyContent="space-between">
+                <Text fontSize="md" color="coolGray.800">
+                {error}
+                </Text>
+                <Alert.Icon mt="1" />
+            </HStack>
+          </VStack>
         </Alert>
       )}
 
@@ -65,7 +72,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         bg="two"
         mt="5"
         type="submit"
-        onClick={handleFormSubmit}
+        onPress={handleFormSubmit}
       >
         <Text
           color="white"

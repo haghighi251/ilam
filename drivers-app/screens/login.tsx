@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { Center, Text, VStack } from "native-base";
 import React, { useCallback, useState } from "react";
 import ActivationForm from "../components/ActivationForm";
@@ -10,7 +11,11 @@ import {
 } from "../utils/functions";
 import { isValidPhone } from "../utils/validation";
 
+
 const LoginScreen: React.FC = () => {
+
+  const navigation = useNavigation();
+
   const [mobile, setMobile] = useState<string>("");
   const [activationCode, setActivationCode] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
@@ -86,6 +91,7 @@ const LoginScreen: React.FC = () => {
           if (res.data.isDriver) {
             // Call the saveLoggedInUserId function with the user ID after successful login
             await saveLoggedInUserId(res.data.user_id);
+            navigation.navigate("Main");
           } else {
             setError("شما دسترسی به این بخش را ندارید.");
           }
@@ -114,7 +120,6 @@ const LoginScreen: React.FC = () => {
           fontWeight="Medium"
           fontStyle="normal"
           fontSize="2xl"
-          align="right"
           color="two"
         >
           راننده عزیز
@@ -124,7 +129,6 @@ const LoginScreen: React.FC = () => {
           fontWeight="Bold"
           fontStyle="normal"
           fontSize="3xl"
-          align="right"
         >
           خوش آمدید
         </Text>

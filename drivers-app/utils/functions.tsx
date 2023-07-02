@@ -1,24 +1,31 @@
+import { API_URL } from '@env';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Config from "react-native-config";
-
-const apiUrl = Config.API_URL;
 
 export async function RegisterOrLogin(mobile: string) {
-  const res = await fetch(`${apiUrl}/api/auth/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      mobile: mobile,
-    }),
-  });
-  if (!res.ok) {
-    throw new Error("خطا در ارتباط با سرور.");
+  try {
+    console.log(API_URL);
+    const res = await fetch(`${API_URL}/api/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        mobile: mobile,
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error("خطا در ارتباط با سرور.");
+    }
+
+    return res.json();
+  } catch (error) {
+    console.log(error);
+    throw error; // Rethrow the error to be handled by the caller
   }
-  return res.json();
 }
 
+
 export async function CheckActivationCodeOnDB(mobile: string, code: string) {
-  const res = await fetch(`${apiUrl}/api/auth/activation`, {
+  const res = await fetch(`${API_URL}/api/auth/activation`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({

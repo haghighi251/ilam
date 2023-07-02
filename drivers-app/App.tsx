@@ -4,12 +4,11 @@ import { StatusBar } from "expo-status-bar";
 import { NativeBaseProvider, extendTheme } from "native-base";
 import { useCallback } from "react";
 import { StyleSheet, View } from "react-native";
-import 'react-native-dotenv';
 import Layout from "./layout/layout";
-
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
+  
   const [fontsLoaded] = useFonts({
     IS_UltraLight: require("./assets/fonts/IRANSansMobile_UltraLight.ttf"),
     IS_Light: require("./assets/fonts/IRANSansMobile_Light.ttf"),

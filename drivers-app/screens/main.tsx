@@ -1,11 +1,12 @@
+import { Center } from "native-base";
 import React from "react";
 import { Text, View } from "react-native";
 
 const MainScreen: React.FC = () => {
   return (
-    <View>
-      <Text>main page</Text>
-    </View>
+    <Center w="100%" bg="one" flex={1}>
+
+    </Center>
   );
 };
 
