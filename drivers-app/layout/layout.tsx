@@ -11,7 +11,7 @@ const Layout: React.FC = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Login"
+        initialRouteName="Main"
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen
