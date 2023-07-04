@@ -4,6 +4,7 @@ import React from "react";
 import LoginScreen from "../screens/login";
 import MainScreen from "../screens/main";
 import UploadDocumentsScreen from "../screens/uploadDocuments";
+import TestScreen from "../screens/testMap";
 
 const Stack = createNativeStackNavigator();
 
@@ -11,7 +12,7 @@ const Layout: React.FC = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Main"
+        initialRouteName="Test"
         screenOptions={{ headerShown: false }}
       >
         <Stack.Screen
@@ -27,6 +28,11 @@ const Layout: React.FC = () => {
         <Stack.Screen
           name="Main"
           component={MainScreen}
+          options={{ title: "صفحه اصلی" }}
+        />
+        <Stack.Screen
+          name="Test"
+          component={TestScreen}
           options={{ title: "صفحه اصلی" }}
         />
       </Stack.Navigator>
