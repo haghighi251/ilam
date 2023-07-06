@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
       overflow: 'hidden',
    },
 });
-const MainScreen: React.FC = () => {
+const RollCallScreen: React.FC = () => {
    return (
       <VStack bg="one" space={0} alignItems="center" flex={1}>
          <ProfilePictureButton />
@@ -28,4 +28,4 @@ const MainScreen: React.FC = () => {
    );
 };
 
-export default MainScreen;
+export default RollCallScreen;
