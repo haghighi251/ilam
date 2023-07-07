@@ -1,13 +1,12 @@
 import { createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
+import { Iuser } from "../../utils/types";
 import type { RootState } from "./store";
-import { Iuser } from "@/utils/types";
 
 // Define the initial state using its data type
 const initialState: Iuser = {
   user: {
     user_id: undefined,
     mobile: undefined,
-    isAdmin: undefined,
     isDriver: undefined,
   },
   isLoggedIn: false,

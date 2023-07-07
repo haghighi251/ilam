@@ -65,6 +65,24 @@ const DrawerContent: React.FC = (props) => {
                      fontSize="md"
                      color="black"
                   >
+                     ارسال مدارک
+                  </Text>
+               )}
+               onPress={() => {
+                  // console.log(screenName);
+                  props.navigation.navigate('UploadDocuments');
+               }}
+               focused={screenName === 'UploadDocuments'}
+            />
+            <DrawerItem
+               label={() => (
+                  <Text
+                     fontFamily="body"
+                     fontWeight="Normal"
+                     fontStyle="normal"
+                     fontSize="md"
+                     color="black"
+                  >
                      حضور غیاب
                   </Text>
                )}

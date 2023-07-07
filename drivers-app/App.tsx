@@ -7,6 +7,7 @@ import { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import 'react-native-gesture-handler';
 import Layout from './layout/layout';
+import { Providers } from './services/Redux/provider';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -69,12 +70,18 @@ export default function App() {
       },
    });
    return (
-      <View style={styles.container} onLayout={onLayoutRootView}>
-         <NativeBaseProvider theme={theme}>
-            <Layout />
-            <StatusBar style="auto" />
-         </NativeBaseProvider>
-      </View>
+      <Providers>
+         <View style={styles.container} onLayout={onLayoutRootView}>
+            <NativeBaseProvider theme={theme}>
+               <Layout />
+               <StatusBar
+                  style="auto"
+                  hidden
+                  //  animated={true} backgroundColor="#E7CEA6"
+               />
+            </NativeBaseProvider>
+         </View>
+      </Providers>
    );
 }
 

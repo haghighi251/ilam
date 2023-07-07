@@ -30,6 +30,21 @@
          "eas": {
             "projectId": "a79818bc-d97f-4313-90bb-cd5bf7989061"
          }
-      }
+      },
+      "plugins": [
+         [
+            "expo-location",
+            {
+               "locationAlwaysAndWhenInUsePermission": "لطفا به این اپلیکیشن اجازه دسترسی به موقعیت مکانی دهید.",
+               "isAndroidBackgroundLocationEnabled": true
+            }
+         ],
+         [
+            "expo-image-picker",
+            {
+               "photosPermission": "این اپلیکیشن برای دسترسی به گالری نیاز به اجازه دارد."
+            }
+         ]
+      ]
    }
 }

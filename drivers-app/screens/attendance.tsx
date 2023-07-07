@@ -1,7 +1,7 @@
 import { Box, Button, Text, VStack } from 'native-base';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import StudentItemCheckBox from '../components/StudentItemCheckBox';
+import StudentItemCheckBox from '../components/AttendanceScreen/StudentItemCheckBox';
 
 const styles = StyleSheet.create({
    mapContainer: {

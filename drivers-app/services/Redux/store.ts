@@ -1,19 +1,19 @@
+import { NODE_ENV } from '@env';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./userReducer";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+import { persistReducer, persistStore } from "redux-persist";
 import thunk from "redux-thunk";
-
+import userReducer from "./userReducer";
 const persistConfig = {
-  key: "taxiUser",
-  storage,
+  key: 'root',
+  storage: AsyncStorage,
 };
 
 const persistedReducer = persistReducer(persistConfig, userReducer);
 
 const store = configureStore({
   reducer: persistedReducer,
-  devTools: process.env.NODE_ENV !== "production",
+  devTools: NODE_ENV !== "production",
   middleware: [thunk],
 });
 

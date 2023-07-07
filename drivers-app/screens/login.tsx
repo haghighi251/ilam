@@ -1,14 +1,18 @@
 import { useNavigation } from '@react-navigation/native';
-import { Center, Text, VStack } from 'native-base';
+import LottieView from 'lottie-react-native';
+import { Box, Center, Text, VStack } from 'native-base';
 import React, { useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ActivationForm from '../components/LoginScreen/ActivationForm';
 import LoginForm from '../components/LoginScreen/LoginForm';
+import { AppDispatch } from '../services/Redux/store';
+import { actionLogin, user } from '../services/Redux/userReducer';
 import {
    CheckActivationCodeOnDB,
    RegisterOrLogin,
    getLoggedInUserId,
-   saveLoggedInUserId,
 } from '../utils/functions';
+import { Iuser } from '../utils/types';
 import { isValidPhone } from '../utils/validation';
 
 const LoginScreen: React.FC = () => {
@@ -20,6 +24,8 @@ const LoginScreen: React.FC = () => {
    const [isLoading, setIsLoading] = useState<boolean>(false);
    const [showActivation, setShowActivation] = useState<boolean>(false);
 
+   const dispatch: AppDispatch = useDispatch();
+   const currentUser: Iuser = useSelector(user);
    // Call the getLoggedInUserId function to retrieve the user ID
    useCallback(async () => {
       const userId = await getLoggedInUserId();
@@ -86,7 +92,16 @@ const LoginScreen: React.FC = () => {
             if (res.success) {
                if (res.data.isDriver) {
                   // Call the saveLoggedInUserId function with the user ID after successful login
-                  await saveLoggedInUserId(res.data.user_id);
+                  dispatch(
+                     actionLogin({
+                        user: {
+                           user_id: res.data.user_id,
+                           mobile: mobile,
+                           isDriver: res.data.isDriver,
+                        },
+                        isLoggedIn: true,
+                     })
+                  );
                   navigation.navigate('Main');
                } else {
                   setError('شما دسترسی به این بخش را ندارید.');
@@ -108,7 +123,14 @@ const LoginScreen: React.FC = () => {
 
    return (
       <Center w="100%" bg="one" flex={1}>
-         <VStack w="100%" px="10" space={1}>
+         <Box w="100%" h="270" mt={-180} bg="four">
+            <LottieView
+               source={require('../assets/76572-bus-tracking.json')}
+               autoPlay
+               loop
+            />
+         </Box>
+         <VStack w="100%" px="10" space={1} mt={20}>
             <Text
                fontFamily="body"
                fontWeight="Medium"

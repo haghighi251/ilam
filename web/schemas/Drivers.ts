@@ -16,6 +16,18 @@ const DriversSchema = new Schema<IDriversSchema>({
       type: String,
       required: true,
    },
+   driverDocuments: [
+      {
+         type: String,
+         default: null,
+      },
+   ],
+   students: [
+      {
+         type: String,
+         default: null,
+      },
+   ],
    score: {
       type: String,
       default: null,
