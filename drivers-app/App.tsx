@@ -6,7 +6,6 @@ import { NativeBaseProvider, extendTheme } from 'native-base';
 import { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import 'react-native-gesture-handler';
-import DrawerLayout from './layout/DrawerLayout';
 import Layout from './layout/layout';
 
 SplashScreen.preventAutoHideAsync();
@@ -72,10 +71,8 @@ export default function App() {
    return (
       <View style={styles.container} onLayout={onLayoutRootView}>
          <NativeBaseProvider theme={theme}>
-            <DrawerLayout>
-               <Layout />
-               <StatusBar style="auto" />
-            </DrawerLayout>
+            <Layout />
+            <StatusBar style="auto" />
          </NativeBaseProvider>
       </View>
    );

@@ -1,10 +1,10 @@
 import { Box, VStack } from 'native-base';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import BestDrivers from '../components/BestDrivers';
-import Map from '../components/Map';
-import News from '../components/News';
-import ProfilePictureButton from '../components/ProfilePictureButton';
+import BestDrivers from '../components/MainScreen/BestDrivers';
+import Map from '../components/MainScreen/Map';
+import News from '../components/MainScreen/News';
+import ProfilePictureButton from '../components/MainScreen/ProfilePictureButton';
 
 const styles = StyleSheet.create({
    mapContainer: {
