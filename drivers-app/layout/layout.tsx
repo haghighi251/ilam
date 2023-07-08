@@ -19,9 +19,7 @@ const Layout: React.FC = () => {
    return (
       <NavigationContainer>
          <Drawer.Navigator
-            initialRouteName={
-               currentUser.isLoggedIn ? 'UploadDocuments' : 'Login'
-            }
+            initialRouteName={currentUser.isLoggedIn ? 'Main' : 'Login'}
             useLegacyImplementation
             screenOptions={{
                headerShown: false,
