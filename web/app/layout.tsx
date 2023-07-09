@@ -1,9 +1,11 @@
-import Head from '@/components/head';
-import '../public/assets/css/index.css';
+'use client';
 import TopMenu from '@/components/TopNav/TopMenu';
+import Head from '@/components/head';
 import { Providers } from '@/services/Redux/provider';
+import '../public/assets/css/index.css';
 // Supports weights 100-900
 import '@fontsource-variable/vazirmatn';
+import { ThemeProvider, createTheme } from '@mui/material';
 
 // export const metadata = {
 //   title: "آسان انجام",
@@ -15,13 +17,20 @@ export default function RootLayout({
 }: {
    children: React.ReactNode;
 }) {
+   const theme = createTheme({
+      typography: {
+         fontFamily: ['Vazirmatn Variable'].join(','),
+      },
+   });
    return (
       <html dir="rtl" lang="fa">
          <Head />
          <body>
             <Providers>
-               <TopMenu />
-               {children}
+               <ThemeProvider theme={theme}>
+                  <TopMenu />
+                  {children}
+               </ThemeProvider>
             </Providers>
          </body>
       </html>
