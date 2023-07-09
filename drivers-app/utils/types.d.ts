@@ -3,8 +3,8 @@ export interface Iuser {
   user: {
     user_id: string | undefined;
     mobile?: string | undefined;
-    usernameOrEmail?: string | undefined;
     isDriver: boolean | undefined;
+    uniqueCode: string | undefined;
   };
   isLoggedIn: boolean;
 }

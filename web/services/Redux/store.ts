@@ -1,20 +1,21 @@
-import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./userReducer";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
-import thunk from "redux-thunk";
+import { configureStore } from '@reduxjs/toolkit';
+import { persistReducer, persistStore } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import thunk from 'redux-thunk';
+
+import userReducer from './userReducer';
 
 const persistConfig = {
-  key: "taxiUser",
-  storage,
+   key: 'adminUser',
+   storage,
 };
 
 const persistedReducer = persistReducer(persistConfig, userReducer);
 
 const store = configureStore({
-  reducer: persistedReducer,
-  devTools: process.env.NODE_ENV !== "production",
-  middleware: [thunk],
+   reducer: persistedReducer,
+   devTools: process.env.NODE_ENV !== 'production',
+   middleware: [thunk],
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

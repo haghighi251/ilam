@@ -24,7 +24,7 @@
     "expo-location": "~15.1.1",
     "expo-splash-screen": "~0.18.2",
     "expo-status-bar": "~1.4.4",
-    "lottie-react-native": "^5.1.6",
+    "lottie-react-native": "5.1.4",
     "native-base": "^3.4.28",
     "react": "18.2.0",
     "react-dom": "^18.2.0",

@@ -1,7 +1,9 @@
-import Head from "@/components/head";
-import "../public/assets/css/index.css";
-import TopMenu from "@/components/TopNav/TopMenu";
-import { Providers } from "@/services/Redux/provider";
+import Head from '@/components/head';
+import '../public/assets/css/index.css';
+import TopMenu from '@/components/TopNav/TopMenu';
+import { Providers } from '@/services/Redux/provider';
+// Supports weights 100-900
+import '@fontsource-variable/vazirmatn';
 
 // export const metadata = {
 //   title: "آسان انجام",
@@ -9,21 +11,19 @@ import { Providers } from "@/services/Redux/provider";
 // };
 
 export default function RootLayout({
-  children,
+   children,
 }: {
-  children: React.ReactNode;
+   children: React.ReactNode;
 }) {
-  return (
-    <html
-      dir="rtl"
-      lang="fa">
-      <Head />
-      <body>
-        <Providers>
-          <TopMenu />
-          {children}
-        </Providers>
-      </body>
-    </html>
-  );
+   return (
+      <html dir="rtl" lang="fa">
+         <Head />
+         <body>
+            <Providers>
+               <TopMenu />
+               {children}
+            </Providers>
+         </body>
+      </html>
+   );
 }

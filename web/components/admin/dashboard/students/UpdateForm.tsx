@@ -36,6 +36,11 @@ const UpdateForm = (props) => {
    );
    const [driverUnique, setDriverUnique] = useState<string>(props.driverUnique);
    const [parentUnique, setParentUnique] = useState<string>(props.parentUnique);
+   const [homeLatitude, setHomeLatitude] = useState<string>(props.homeLatitude);
+   const [homeLongitude, setHomeLongitude] = useState<string>(
+      props.homeLongitude
+   );
+   const [homeDetails, setHomeDetails] = useState<string>(props.homeDetails);
 
    const handleSubmit = async () => {
       let errorMsg = null;
@@ -71,6 +76,9 @@ const UpdateForm = (props) => {
                setSchoolUniqueId('');
                setDriverUnique('');
                setParentUnique('');
+               setHomeLatitude('');
+               setHomeLongitude('');
+               setHomeDetails('');
                handleFormClose(); // Close the modal if desired
             } else {
                setError(responseData.error);
@@ -232,6 +240,33 @@ const UpdateForm = (props) => {
                   ))}
                </Select>
             </FormControl>
+            <TextField
+               id="input-with-sx"
+               label="عرض جغرافیایی"
+               variant="standard"
+               value={homeLatitude}
+               name="homeLatitude"
+               onChange={(e) => setHomeLatitude(e.target.value)}
+               required
+            />
+            <TextField
+               id="input-with-sx"
+               label="طول جغرافیایی"
+               variant="standard"
+               value={homeLongitude}
+               name="homeLongitude"
+               onChange={(e) => setHomeLongitude(e.target.value)}
+               required
+            />
+            <TextField
+               id="input-with-sx"
+               label="توضیحات اضافی"
+               variant="standard"
+               value={homeDetails}
+               name="homeDetails"
+               onChange={(e) => setHomeDetails(e.target.value)}
+               required
+            />
          </Box>
          {error && (
             <Alert severity="error" className="mb-3 md:mb-6">

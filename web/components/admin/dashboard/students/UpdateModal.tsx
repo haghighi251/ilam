@@ -29,6 +29,9 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
    schoolUniqueId,
    driverUnique,
    parentUnique,
+   homeLatitude,
+   homeLongitude,
+   homeDetails,
 }) => {
    const [open, setOpen] = React.useState(false);
    const handleOpen = () => setOpen(true);
@@ -65,6 +68,9 @@ const UpdateModal: React.FC<UpdateModalProps> = ({
                   schoolUniqueId={schoolUniqueId}
                   driverUnique={driverUnique}
                   parentUnique={parentUnique}
+                  homeLatitude={homeLatitude}
+                  homeLongitude={homeLongitude}
+                  homeDetails={homeDetails}
                />
             </Box>
          </Modal>

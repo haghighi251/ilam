@@ -8,6 +8,10 @@ import axios from 'axios';
 import { Center } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
+import { user } from '../../services/Redux/userReducer';
+import { getStudentsInformations } from '../../utils/functions';
+import { Iuser } from '../../utils/types';
 import Loading from '../Loading';
 
 const Map: React.FC = () => {
@@ -18,35 +22,37 @@ const Map: React.FC = () => {
       lon: null,
    });
    const [endPoints, setEndPoints] = useState([]);
+   const currentUser: Iuser = useSelector(user);
+   console.log('Current user:', currentUser.user.uniqueCode);
+   const getRouteCoordinates = async () => {
+      try {
+         const response = await axios.get(
+            'https://api.openrouteservice.org/v2/directions/driving-car',
+            {
+               params: {
+                  api_key:
+                     '5b3ce3597851110001cf6248ff22a7a2744249538ad7e58b04b4bf76',
+                  start: '49.574106,37.295253',
+                  end: '49.597625,37.303880',
+               },
+            }
+         );
+
+         const { data } = response;
+         if (data.features && data.features.length > 0) {
+            const { geometry } = data.features[0];
+            const decodedPoints = await decodePolyline(geometry.coordinates);
+            setRouteCoordinates(decodedPoints);
+            console.log('Route coordinates:', decodedPoints);
+            setIsLoading(false);
+         }
+      } catch (error) {
+         console.error('Error fetching route:', error);
+      }
+   };
 
    useEffect(() => {
-      const getRouteCoordinates = async () => {
-         try {
-            const response = await axios.get(
-               'https://api.openrouteservice.org/v2/directions/driving-car',
-               {
-                  params: {
-                     api_key:
-                        '5b3ce3597851110001cf6248ff22a7a2744249538ad7e58b04b4bf76',
-                     start: '49.574106,37.295253',
-                     end: '49.597625,37.303880',
-                  },
-               }
-            );
-
-            const { data } = response;
-            if (data.features && data.features.length > 0) {
-               const { geometry } = data.features[0];
-               const decodedPoints = await decodePolyline(geometry.coordinates);
-               setRouteCoordinates(decodedPoints);
-               console.log('Route coordinates:', decodedPoints);
-               setIsLoading(false);
-            }
-         } catch (error) {
-            console.error('Error fetching route:', error);
-         }
-      };
-
+      console.log(getStudentsInformations(currentUser.user.uniqueCode));
       getRouteCoordinates();
    }, []);
 

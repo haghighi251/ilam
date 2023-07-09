@@ -8,6 +8,7 @@ const initialState: Iuser = {
     user_id: undefined,
     mobile: undefined,
     isDriver: undefined,
+    uniqueCode: undefined,
   },
   isLoggedIn: false,
 };
@@ -27,8 +28,8 @@ export const userReducer = createSlice({
         user: {
           user_id: undefined,
           mobile: undefined,
-          isAdmin: undefined,
           isDriver: undefined,
+          uniqueCode: undefined,
         },
         isLoggedIn: false,
       });

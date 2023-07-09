@@ -26,10 +26,24 @@ const StudentsSchema = new Schema<IStudentsSchema>({
       required: false, // Because we should first create users and the drivers should create their user by their self.
       default: null,
    },
-   parentUnique: {
+   parentUnique: [
+      {
+         type: String,
+         required: false, // Because we should first create users and the parents should create their user by their self.
+         default: null,
+      },
+   ],
+   homeLatitude: {
       type: String,
-      required: false, // Because we should first create users and the parents should create their user by their self.
-      default: null,
+      required: false,
+   },
+   homeLongitude: {
+      type: String,
+      required: false,
+   },
+   homeDetails: {
+      type: String,
+      required: false,
    },
 });
 

@@ -7,7 +7,7 @@ export async function GET(request: NextRequest, { params }) {
    try {
       await connectMongo();
       // Fetch the Students
-      const studentDataFromDB = await Students.findOne({
+      const studentDataFromDB = await Students.find({
          driverUnique: params.id,
       });
       return NextResponse.json({

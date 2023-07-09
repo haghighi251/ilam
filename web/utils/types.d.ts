@@ -72,10 +72,15 @@ export interface IDriversSchema extends Document {
 }
 
 export interface IStudentsSchema extends Document {
+   name: string;
+   nationalCode: string;
    studentUnique: string;
    schoolUniqueId: string;
    driverUnique: string;
    parentUnique: [string];
+   homeLatitude: string;
+   homeLongitude: string;
+   homeDetails: string;
 }
 
 export interface IParentsSchema extends Document {

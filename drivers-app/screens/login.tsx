@@ -98,6 +98,7 @@ const LoginScreen: React.FC = () => {
                            user_id: res.data.user_id,
                            mobile: mobile,
                            isDriver: res.data.isDriver,
+                           uniqueCode: res.data.uniqueCode,
                         },
                         isLoggedIn: true,
                      })

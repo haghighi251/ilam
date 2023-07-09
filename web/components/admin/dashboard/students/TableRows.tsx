@@ -11,31 +11,6 @@ const Row = (props) => {
    const [open, setOpen] = useState(false);
 
    const [modalClosed, setModalClosed] = useState(false);
-   // const [cityName, setCityName] = useState('');
-   // To fetch the data and display it after the modal has been closed and the data has been deleted.
-   // useEffect(() => {
-   //    fetchCity();
-   // }, [modalClosed]);
-
-   // async function fetchCity() {
-   //    try {
-   //       const response = await fetch(
-   //          `/api/admin/authorized/cities/read/${row.cityUnique}`,
-   //          {
-   //             method: 'GET',
-   //             headers: { 'Content-Type': 'application/json' },
-   //          }
-   //       );
-   //       const responseData = await response.json();
-   //       if (response.ok) {
-   //          setCityName(responseData.data.cityName);
-   //       } else {
-   //          console.error(responseData.error);
-   //       }
-   //    } catch (error) {
-   //       console.error(error);
-   //    }
-   // }
 
    function handleModalClose() {
       setModalClosed(true);
@@ -56,6 +31,10 @@ const Row = (props) => {
             <TableCell align="right">{row.driverUnique}</TableCell>
             <TableCell align="right">{row.parentUnique}</TableCell>
             <TableCell align="right">
+               {row.homeLatitude}, {row.homeLongitude}
+            </TableCell>
+            <TableCell align="right">{row.homeDetails}</TableCell>
+            <TableCell align="right">
                <Box sx={{ display: 'flex', justifyContent: '' }}>
                   <UpdateModal
                      onClose={handleModalClose}
@@ -65,6 +44,9 @@ const Row = (props) => {
                      schoolUniqueId={row.schoolUniqueId}
                      driverUnique={row.driverUnique}
                      parentUnique={row.parentUnique}
+                     homeLatitude={row.homeLatitude}
+                     homeLongitude={row.homeLongitude}
+                     homeDetails={row.homeDetails}
                   />
                   <DeleteModal
                      onClose={handleModalClose}

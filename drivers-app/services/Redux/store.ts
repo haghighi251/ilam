@@ -5,7 +5,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import thunk from "redux-thunk";
 import userReducer from "./userReducer";
 const persistConfig = {
-  key: 'root',
+  key: 'driver',
   storage: AsyncStorage,
 };
 

@@ -1,10 +1,13 @@
 import { Box, VStack } from 'native-base';
 import React from 'react';
 import { StyleSheet } from 'react-native';
+import { useDispatch } from 'react-redux';
 import BestDrivers from '../components/MainScreen/BestDrivers';
 import Map from '../components/MainScreen/Map';
 import News from '../components/MainScreen/News';
 import ProfilePictureButton from '../components/MainScreen/ProfilePictureButton';
+import { AppDispatch } from '../services/Redux/store';
+import { actionLogout } from '../services/Redux/userReducer';
 
 const styles = StyleSheet.create({
    mapContainer: {
@@ -14,6 +17,8 @@ const styles = StyleSheet.create({
    },
 });
 const MainScreen: React.FC = () => {
+   // const dispatch: AppDispatch = useDispatch();
+   // dispatch(actionLogout());
    return (
       <VStack bg="one" space={0} alignItems="center" flex={1}>
          <ProfilePictureButton />

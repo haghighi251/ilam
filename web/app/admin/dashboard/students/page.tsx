@@ -89,12 +89,18 @@ const page = () => {
                      <TableCell align="right">کد مدرسه</TableCell>
                      <TableCell align="right">کد راننده</TableCell>
                      <TableCell align="right">کد اولیا</TableCell>
+                     <TableCell align="right">موقعیت خانه</TableCell>
+                     <TableCell align="right">اطلاعات اضافی خانه</TableCell>
                      <TableCell align="right">عملیات</TableCell>
                   </TableRow>
                </TableHead>
                <TableBody>
                   {rows.map((row) => (
-                     <Row onClose={handleModalClose} key={row.studentUnique} row={row} />
+                     <Row
+                        onClose={handleModalClose}
+                        key={row.studentUnique}
+                        row={row}
+                     />
                   ))}
                </TableBody>
             </Table>
