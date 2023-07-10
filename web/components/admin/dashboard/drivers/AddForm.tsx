@@ -41,7 +41,7 @@ const AddForm = (props) => {
          setLoading(true);
          setError(null);
          try {
-            const response = await fetch('/api/admin/authorized/school/add', {
+            const response = await fetch('/api/admin/authorized/drivers/add', {
                method: 'POST',
                headers: { 'Content-Type': 'application/json' },
                body: JSON.stringify({

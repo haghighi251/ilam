@@ -64,6 +64,9 @@ const UpdateForm = (props) => {
                      schoolUniqueId: schoolUniqueId,
                      driverUnique: driverUnique,
                      parentUnique: parentUnique,
+                     homeLatitude: homeLatitude,
+                     homeLongitude: homeLongitude,
+                     homeDetails: homeDetails,
                   }),
                }
             );
@@ -169,8 +172,7 @@ const UpdateForm = (props) => {
    };
    return (
       <div>
-         {' '}
-         <Box sx={{ display: 'flex', alignItems: 'flex-end' }} className="mb-4">
+         <Box className="mb-4">
             <TextField
                id="input-with-sx"
                label="نام و نام خانوادگی"

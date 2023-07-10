@@ -47,7 +47,7 @@ const AddForm = (props) => {
          setError(null);
          try {
             const response = await fetch('/api/admin/authorized/users/update', {
-               method: 'POST',
+               method: 'PATCH',
                headers: { 'Content-Type': 'application/json' },
                body: JSON.stringify({
                   username: username,

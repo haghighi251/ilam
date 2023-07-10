@@ -47,7 +47,10 @@ const page = () => {
       studentUnique: string,
       schoolUniqueId: string,
       driverUnique: string,
-      parentUnique: string
+      parentUnique: string,
+      homeLatitude,
+      homeLongitude,
+      homeDetails
    ) {
       return {
          name,
@@ -56,6 +59,9 @@ const page = () => {
          schoolUniqueId,
          driverUnique,
          parentUnique,
+         homeLatitude,
+         homeLongitude,
+         homeDetails,
       };
    }
    const rows = students.map((student) =>
@@ -65,7 +71,10 @@ const page = () => {
          student.studentUnique,
          student.schoolUniqueId,
          student.driverUnique,
-         student.parentUnique
+         student.parentUnique,
+         student.homeLatitude,
+         student.homeLongitude,
+         student.homeDetails
       )
    );
    function handleModalClose() {

@@ -35,6 +35,11 @@ const UsersSchema = new Schema<IUsersSchema>(
          required: false,
          default: null,
       },
+      salt: {
+         type: String,
+         required: false,
+         default: null,
+      },
       isAdmin: {
          type: Boolean,
          default: false,
@@ -70,7 +75,7 @@ const UsersSchema = new Schema<IUsersSchema>(
       },
       activationCode: {
          type: String,
-         required: true,
+         required: false,
       },
    },
    { timestamps: true }

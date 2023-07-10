@@ -13,9 +13,7 @@ export async function POST(request: NextRequest) {
          body.name === null ||
          body.name === undefined ||
          body.nationalCode === null ||
-         body.nationalCode === undefined ||
-         body.schoolUniqueId === null ||
-         body.schoolUniqueId === undefined
+         body.nationalCode === undefined
       )
          return NextResponse.json({
             success: false,
@@ -48,6 +46,9 @@ export async function POST(request: NextRequest) {
          schoolUniqueId: body.schoolUniqueId,
          driverUnique: body.driverUnique,
          parentUnique: body.parentUnique,
+         homeLatitude: body.homeLatitude,
+         homeLongitude: body.homeLongitude,
+         homeDetails: body.homeDetails,
       });
 
       await newStudent

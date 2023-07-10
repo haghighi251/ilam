@@ -9,7 +9,6 @@ const DeleteButton = ({ handleClose, cityName, cityUnique }) => {
    const [successMessage, setSuccessMessage] = React.useState<string>('');
 
    const handleDelete = async () => {
-      console.log(provinceUnique);
       let errorMsg = null;
       if (
          cityName === null ||

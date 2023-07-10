@@ -34,6 +34,9 @@ const AddForm = (props) => {
    const [schoolUniqueId, setSchoolUniqueId] = useState<string>('');
    const [driverUnique, setDriverUnique] = useState<string>('');
    const [parentUnique, setParentUnique] = useState<string>('');
+   const [homeLatitude, setHomeLatitude] = useState<string>('');
+   const [homeLongitude, setHomeLongitude] = useState<string>('');
+   const [homeDetails, setHomeDetails] = useState<string>('');
 
    const handleSubmit = async () => {
       let errorMsg = null;
@@ -59,6 +62,9 @@ const AddForm = (props) => {
                   schoolUniqueId,
                   driverUnique,
                   parentUnique,
+                  homeLatitude,
+                  homeLongitude,
+                  homeDetails,
                }),
             });
 
@@ -70,6 +76,9 @@ const AddForm = (props) => {
                setSchoolUniqueId('');
                setDriverUnique('');
                setParentUnique('');
+               setHomeLatitude('');
+               setHomeLongitude('');
+               setHomeDetails('');
                handleFormClose(); // Close the modal if desired
             } else {
                setError(responseData.error);
@@ -160,7 +169,6 @@ const AddForm = (props) => {
    };
    return (
       <div>
-         {' '}
          <Box className="mb-4">
             <TextField
                id="input-with-sx"
@@ -231,6 +239,33 @@ const AddForm = (props) => {
                   ))}
                </Select>
             </FormControl>
+            <TextField
+               id="input-with-sx"
+               label="عرض جغرافیایی"
+               variant="standard"
+               value={homeLatitude}
+               name="homeLatitude"
+               onChange={(e) => setHomeLatitude(e.target.value)}
+               required
+            />
+            <TextField
+               id="input-with-sx"
+               label="طول جغرافیایی"
+               variant="standard"
+               value={homeLongitude}
+               name="homeLongitude"
+               onChange={(e) => setHomeLongitude(e.target.value)}
+               required
+            />
+            <TextField
+               id="input-with-sx"
+               label="توضیحات اضافی"
+               variant="standard"
+               value={homeDetails}
+               name="homeDetails"
+               onChange={(e) => setHomeDetails(e.target.value)}
+               required
+            />
          </Box>
          {error && (
             <Alert severity="error" className="mb-3 md:mb-6">

@@ -31,6 +31,9 @@ export async function PATCH(request: NextRequest) {
                schoolUniqueId: body.schoolUniqueId,
                driverUnique: body.driverUnique,
                parentUnique: body.parentUnique,
+               homeLatitude: body.homeLatitude,
+               homeLongitude: body.homeLongitude,
+               homeDetails: body.homeDetails,
             },
          },
          { new: true }

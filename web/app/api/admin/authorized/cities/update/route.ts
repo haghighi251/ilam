@@ -1,50 +1,57 @@
-import { NextResponse } from "next/server";
-import { type NextRequest } from "next/server";
-import connectMongo from "@/utils/connectMongo";
-import bcrypt from "bcryptjs";
-import Cities from "@/schemas/Cities";
-import { ICitiesSchema } from "@/utils/types";
+import { NextResponse, type NextRequest } from 'next/server';
+
+import Cities from '@/schemas/Cities';
+import connectMongo from '@/utils/connectMongo';
 
 export async function PATCH(request: NextRequest) {
-  try {
-    await connectMongo();
-    const body = await request.json();
-    console.log(body)
+   try {
+      await connectMongo();
+      const body = await request.json();
+      console.log(body);
+      if (
+         body.cityName === null ||
+         body.cityName === undefined ||
+         body.cityUnique === null ||
+         body.cityUnique === undefined
+      ) {
+         return NextResponse.json({
+            success: false,
+            error: 'اطلاعات برای ثبت صحیح نمی باشد.',
+            data: null,
+         });
+      }
 
-    if (
-      body.cityName === null || body.cityName === undefined || body.cityUnique === null || body.cityUnique === undefined 
-    ) {
+      const cityData = await Cities.findOneAndUpdate(
+         { cityUnique: body.cityUnique },
+         {
+            $set: {
+               cityName: body.cityName,
+               provinceUnique: body.provinceUnique,
+               speedMin: body.speedMin,
+               speedMax: body.speedMax,
+            },
+         },
+         { new: true }
+      );
+
+      if (!cityData) {
+         return NextResponse.json({
+            success: false,
+            error: 'استانی با این شناسه وجود ندارد.',
+            data: null,
+         });
+      }
+
       return NextResponse.json({
-        success: false,
-        error: "اطلاعات برای ثبت صحیح نمی باشد.",
-        data: null,
+         success: true,
+         error: null,
+         data: cityData,
       });
-    }
-
-    const cityData = await Cities.findOneAndUpdate(
-      { cityUnique: body.cityUnique },
-      { $set: { cityName: body.city, provinceUnique: body.provinceUnique, speedMin: body.speedMin, speedMax: body.speedMax } },
-      { new: true }
-    );
-
-    if (!cityData) {
+   } catch (e) {
       return NextResponse.json({
-        success: false,
-        error: "استانی با این شناسه وجود ندارد.",
-        data: null,
+         success: false,
+         error: 'خطایی در سرور رخ داده است. لطفا لحظاتی دیگر مجددا تلاش نمایید.',
+         data: null,
       });
-    }
-
-    return NextResponse.json({
-      success: true,
-      error: null,
-      data: cityData,
-    });
-  } catch (e) {
-    return NextResponse.json({
-      success: false,
-      error: "خطایی در سرور رخ داده است. لطفا لحظاتی دیگر مجددا تلاش نمایید.",
-      data: null,
-    });
-  }
+   }
 }

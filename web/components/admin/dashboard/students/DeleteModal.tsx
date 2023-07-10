@@ -53,7 +53,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({
          >
             <Box sx={style}>
                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  آیا از حذف استان {name} اطمینان دارید؟
+                  آیا از حذف دانش‌آموز{name} اطمینان دارید؟
                </Typography>
                <Box
                   sx={{

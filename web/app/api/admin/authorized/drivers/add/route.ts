@@ -9,7 +9,6 @@ export async function POST(request: NextRequest) {
    try {
       await connectMongo();
       const body = await request.json();
-
       if (
          body.mobile === null ||
          body.mobile === undefined ||
@@ -40,7 +39,7 @@ export async function POST(request: NextRequest) {
          .padStart(6, '0');
 
       const newDriver: IDriversSchema = new Drivers({
-         userUniqueCode: userDataFromDB.userUniqueCode,
+         userUniqueCode: userDataFromDB.uniqueCode,
          driverUniqueId: randomNumber,
          schoolUniqueId: body.schoolUniqueId,
       });

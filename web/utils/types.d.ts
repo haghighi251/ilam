@@ -30,7 +30,6 @@ export interface IUsersSchema extends Document {
    isDriver: boolean;
    isParent: boolean;
    isSchoolAdmin: boolean;
-   isStudent: boolean;
    isProvinceAdmin: boolean;
    isCityAdmin: boolean;
    uniqueCode: string;

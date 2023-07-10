@@ -29,14 +29,20 @@ const Row = (props) => {
             <TableCell align="right">{row.password}</TableCell>
             <TableCell align="right">{row.nickname}</TableCell>
             <TableCell align="right">{row.picture}</TableCell>
-            <TableCell align="right">{row.isAdmin}</TableCell>
-            <TableCell align="right">{row.isDriver}</TableCell>
-            <TableCell align="right">{row.isParent}</TableCell>
-            <TableCell align="right">{row.isSchoolAdmin}</TableCell>
-            <TableCell align="right">{row.isCityAdmin}</TableCell>
-            <TableCell align="right">{row.isProvinceAdmin}</TableCell>
+            <TableCell align="right">{row.isAdmin ? 'بله' : 'خیر'}</TableCell>
+            <TableCell align="right">{row.isDriver ? 'بله' : 'خیر'}</TableCell>
+            <TableCell align="right">{row.isParent ? 'بله' : 'خیر'}</TableCell>
+            <TableCell align="right">
+               {row.isSchoolAdmin ? 'بله' : 'خیر'}
+            </TableCell>
+            <TableCell align="right">
+               {row.isCityAdmin ? 'بله' : 'خیر'}
+            </TableCell>
+            <TableCell align="right">
+               {row.isProvinceAdmin ? 'بله' : 'خیر'}
+            </TableCell>
             <TableCell align="right">{row.uniqueCode}</TableCell>
-            <TableCell align="right">{row.status}</TableCell>
+            <TableCell align="right">{row.status ? 'بله' : 'خیر'}</TableCell>
             <TableCell align="right">{row.activationCode}</TableCell>
             <TableCell align="right">
                <Box sx={{ display: 'flex', justifyContent: '' }}>

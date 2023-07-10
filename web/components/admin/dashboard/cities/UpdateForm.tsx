@@ -53,11 +53,11 @@ const UpdateForm = (props) => {
                   method: 'PATCH',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({
-                     cityName: props.cityName,
+                     cityName: cityName,
                      cityUnique: props.cityUnique,
-                     provinceUnique: props.provinceUnique,
-                     speedMin: props.speedMin,
-                     speedMax: props.speedMax,
+                     provinceUnique: provinceUnique,
+                     speedMin: speedMin,
+                     speedMax: speedMax,
                   }),
                }
             );
@@ -84,7 +84,7 @@ const UpdateForm = (props) => {
    };
    async function fetchProvinces() {
       try {
-         const response = await fetch('/api/admin/authorized/cities/all', {
+         const response = await fetch('/api/admin/authorized/provinces/all', {
             method: 'GET',
             headers: {
                'Content-Type': 'application/json',
@@ -113,15 +113,16 @@ const UpdateForm = (props) => {
 
    return (
       <div>
-         {' '}
          <Box className="mb-4">
             <TextField
                id="input-with-sx"
                label="نام شهر"
                variant="standard"
                value={cityName}
-               name="usernameOrEmail"
-               onChange={(e) => setCityName(e.target.value)}
+               name="cityName"
+               onChange={(e) => {
+                  setCityName(e.target.value);
+               }}
                required
             />
             <FormControl fullWidth>
