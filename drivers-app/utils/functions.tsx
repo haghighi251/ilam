@@ -56,17 +56,3 @@ export async function getLoggedInUserId(): Promise<string | null> {
       return null;
    }
 }
-
-// To get students information in drivers app
-export async function getStudentsInformations(driverUnique: string) {
-   const url = `${API_URL}/api/admin/authorized/students/filter/driver/${driverUnique}`;
-   const res = await fetch(url, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-   });
-   if (!res.ok) {
-      throw new Error('خطا در ارتباط با سرور.');
-   }
-
-   return res.json();
-}

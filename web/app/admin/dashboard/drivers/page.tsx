@@ -12,7 +12,7 @@ import { useEffect, useState } from 'react';
 import AddModal from '@/components/admin/dashboard/drivers/AddModal';
 import Row from '@/components/admin/dashboard/drivers/TableRows';
 
-const page = () => {
+const page: React.FC = () => {
    const [drivers, setDrivers] = useState([]);
    const [modalClosed, setModalClosed] = useState(false);
    // To fetch the data and display it after the modal has been closed and the data has been deleted.
@@ -89,7 +89,11 @@ const page = () => {
                </TableHead>
                <TableBody>
                   {rows.map((row) => (
-                     <Row onClose={handleModalClose} key={row.driverUniqueId} row={row} />
+                     <Row
+                        onClose={handleModalClose}
+                        key={row.driverUniqueId}
+                        row={row}
+                     />
                   ))}
                </TableBody>
             </Table>
