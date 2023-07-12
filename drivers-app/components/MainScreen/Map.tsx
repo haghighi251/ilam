@@ -9,18 +9,16 @@ import { Iuser } from '../../utils/types';
 import Loading from '../Loading';
 import MapRouter from './MapRouter';
 import PointMarker from './PointMarker';
-import ZoneHighlighter from './ZoneHighlighter';
+import RoutingStagger from './RoutingStagger';
 
 const Map: React.FC = () => {
    const [driverUnique, setDriverUnique] = useState<string>('');
-   const [isLoading, setIsLoading] = useState<boolean>(false);
+   const [schoolUnique, setSchoolUnique] = useState<string>('');
+   const [isLoading, setIsLoading] = useState<boolean>(true);
    const [students, setStudents] = useState<any[]>([]);
-   const [schoolData, setSchoolData] = useState({});
+   const [schoolData, setSchoolData] = useState(null);
    const currentUser: Iuser = useSelector(user);
 
-   const handleMapRouterLoading = (loading: boolean) => {
-      setIsLoading(loading);
-   };
    // To get School data
    const getSchoolInformation = async (id: string) => {
       try {
@@ -56,7 +54,7 @@ const Map: React.FC = () => {
                // console.log('driverUnique:', data.data.driverUniqueId);
             }
             if (data.data.schoolUniqueId !== '') {
-               getSchoolInformation(data.data.schoolUniqueId);
+               setSchoolUnique(data.data.schoolUniqueId);
             }
          } else {
             console.error(data.error);
@@ -98,32 +96,42 @@ const Map: React.FC = () => {
       }
    }, [driverUnique]);
 
+   useEffect(() => {
+      if (schoolUnique !== '') {
+         getSchoolInformation(schoolUnique);
+      }
+   }, [schoolUnique]);
+   useEffect(() => {
+      if (schoolData !== null) {
+         setIsLoading(false);
+      }
+   }, [schoolData]);
    return (
       <Center w="100%" bg="one" flex={1}>
          {isLoading ? (
             <Loading text={'در حال بارگذاری'} />
          ) : (
-            <MapView
-               style={styles.map}
-               initialRegion={{
-                  latitude: 37.2806,
-                  longitude: 49.5832,
-                  latitudeDelta: 0.05,
-                  longitudeDelta: 0.05,
-               }}
-            >
-               {/* Routing - This Part will draw lines based on the points that we get from project-osrm routing API service */}
-               <MapRouter
-                  setIsLoading={handleMapRouterLoading}
-                  students={students}
-               />
+            <>
+               <MapView
+                  style={styles.map}
+                  initialRegion={{
+                     latitude: Number(schoolData.latitude),
+                     longitude: Number(schoolData.longitude),
+                     latitudeDelta: 0.05,
+                     longitudeDelta: 0.05,
+                  }}
+               >
+                  {/* Routing - This Part will draw lines based on the points that we get from project-osrm routing API service */}
+                  <MapRouter students={students} />
 
-               {/* Polygon is for highlighting a zone */}
-               <ZoneHighlighter />
+                  {/* Polygon is for highlighting a zone */}
+                  {/* <ZoneHighlighter /> */}
 
-               {/* Marker will show a point on the map */}
-               <PointMarker schoolData={schoolData} students={students} />
-            </MapView>
+                  {/* Marker will show a point on the map */}
+                  <PointMarker schoolData={schoolData} students={students} />
+               </MapView>
+               <RoutingStagger schoolData={schoolData} students={students} />
+            </>
          )}
       </Center>
    );

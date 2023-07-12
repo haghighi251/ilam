@@ -1,4 +1,4 @@
-// import AutoScroll from '@homielab/react-native-auto-scroll';
+import AutoScroll from '@homielab/react-native-auto-scroll';
 import { Box, Text } from 'native-base';
 
 const News: React.FC = () => {
@@ -17,29 +17,30 @@ const News: React.FC = () => {
             fontFamily="body"
             fontWeight="Bold"
             fontStyle="normal"
-            fontSize="xl"
+            fontSize="lg"
             color="black"
             px={5}
-            mt={3}
+            mt={2}
          >
             اخبار
          </Text>
-         {/* <AutoScroll endPaddingWidth={0} isLTR={true}>
+         <AutoScroll endPaddingWidth={0} isLTR={true}>
             <Box display="flex" flexDirection="row">
                {data.map((item) => (
                   <Text
                      fontFamily="body"
-                     fontWeight="Bold"
+                     fontWeight="Normal"
                      fontStyle="normal"
-                     fontSize="md"
+                     fontSize="sm"
                      color="black"
                      mx={5}
+                     mb={2}
                   >
                      {item.text}
                   </Text>
                ))}
             </Box>
-         </AutoScroll> */}
+         </AutoScroll>
       </Box>
    );
 };

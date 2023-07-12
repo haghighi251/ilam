@@ -3,7 +3,7 @@ import { Polyline } from '@splicer97/react-native-osmdroid';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-const MapRouter: React.FC = ({ setIsLoading, students }) => {
+const MapRouter: React.FC = ({ students }) => {
    const [routeCoordinates, setRouteCoordinates] = useState([]);
 
    // const decodePolyline = (coordinates) => {
@@ -72,13 +72,10 @@ const MapRouter: React.FC = ({ setIsLoading, students }) => {
                   const { geometry } = routes[0];
                   const decodedPoints = await decodePolyline(geometry);
                   setRouteCoordinates(decodedPoints);
-                  setIsLoading(false);
                }
             }
          } catch (error) {
             console.error('Error fetching route:', error);
-         } finally {
-            setIsLoading(false);
          }
       };
       if (students.length > 0) {

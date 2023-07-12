@@ -1,9 +1,25 @@
-import { Avatar, Pressable } from 'native-base';
-
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import {
+   Avatar,
+   Box,
+   Button,
+   Divider,
+   HStack,
+   Popover,
+   Pressable,
+   Text,
+   VStack,
+} from 'native-base';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch } from '../../services/Redux/store';
+import { actionLogout, user } from '../../services/Redux/userReducer';
+import { Iuser } from '../../utils/types';
 const ProfilePictureButton: React.FC = () => {
+   const dispatch: AppDispatch = useDispatch();
+   // dispatch(actionLogout());
+   const currentUser: Iuser = useSelector(user);
    return (
-      <Pressable
-         onPress={() => console.log("I'm Pressed")}
+      <Box
          borderRadius="full"
          zIndex={2}
          position="absolute"
@@ -13,17 +29,68 @@ const ProfilePictureButton: React.FC = () => {
          p={1}
          bg="two"
       >
-         <Avatar
-            bg="green.500"
-            source={{
-               uri: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
+         <Popover
+            trigger={(triggerProps) => {
+               return (
+                  <Pressable {...triggerProps}>
+                     <Avatar
+                        bg="white"
+                        source={{
+                           uri: user.picture || null,
+                        }}
+                        w={51}
+                        h={51}
+                     >
+                        <MaterialCommunityIcons
+                           name="face-man-profile"
+                           size={24}
+                           color="black"
+                        />
+                     </Avatar>
+                  </Pressable>
+               );
             }}
-            w={51}
-            h={51}
          >
-            AJ
-         </Avatar>
-      </Pressable>
+            <Popover.Content accessibilityLabel="خروج" w="129" bg="one">
+               <Popover.Arrow bg="one" />
+               <VStack p={1}>
+                  <HStack justifyContent="flex-end">
+                     <Text
+                        fontFamily="body"
+                        fontWeight="Bold"
+                        fontStyle="normal"
+                        fontSize="sm"
+                     >
+                        عملیات
+                     </Text>
+                  </HStack>
+                  <Divider bg="black" mb={3} />
+                  <Button
+                     endIcon={
+                        <Ionicons
+                           name="log-out-outline"
+                           size={24}
+                           color="black"
+                        />
+                     }
+                     py={1}
+                     onPress={() => {
+                        dispatch(actionLogout());
+                     }}
+                  >
+                     <Text
+                        fontFamily="body"
+                        fontWeight="Bold"
+                        fontStyle="normal"
+                        fontSize="sm"
+                     >
+                        خروج
+                     </Text>
+                  </Button>
+               </VStack>
+            </Popover.Content>
+         </Popover>
+      </Box>
    );
 };
 export default ProfilePictureButton;

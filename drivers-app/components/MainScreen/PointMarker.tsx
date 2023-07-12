@@ -1,8 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Marker } from '@splicer97/react-native-osmdroid';
-import { Box, HStack, Text } from 'native-base';
+import { Box, HStack, Text, useDisclose } from 'native-base';
 
 const PointMarker: React.FC = ({ schoolData, students }) => {
+   const { isOpen, onOpen, onClose } = useDisclose();
    return (
       <>
          {/* School Marker */}
@@ -37,8 +38,9 @@ const PointMarker: React.FC = ({ schoolData, students }) => {
          ) : null}
          {/* Students Marker */}
          {students.length > 0
-            ? students.map((student) => (
+            ? students.map((student, index) => (
                  <Marker
+                    key={index}
                     coordinate={{
                        latitude: Number(student.homeLatitude),
                        longitude: Number(student.homeLongitude),
