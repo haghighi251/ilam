@@ -9,7 +9,7 @@ const initialState: Iuser = {
    user: {
       status: false,
       user_id: undefined,
-      mobile: undefined,
+      usernameOrEmail: undefined,
    },
    isLoggedIn: false,
 };
@@ -29,7 +29,7 @@ export const userReducer = createSlice({
             user: {
                status: false,
                user_id: undefined,
-               mobile: undefined,
+               usernameOrEmail: undefined,
             },
             isLoggedIn: false,
          });

@@ -7,7 +7,7 @@ import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Loading from '@/components/loading';
@@ -35,13 +35,44 @@ const AdminLogin = () => {
    const [password, setPassword] = useState<string>('');
    const [error, setError] = useState<string | null>(null);
    const [isLoading, setIsLoading] = useState<boolean>(false);
+   const [userData, setUserData] = useState(null);
    const router = useRouter();
    const dispatch: AppDispatch = useDispatch();
    const currentUser: Iuser = useSelector(user);
-   // if (currentUser.isLoggedIn !== false)
-   //    currentUser.user.isAdmin
-   //       ? router.push('/admin/dashboard')
-   //       : router.push('/');
+
+   const getUserData = async () => {
+      try {
+         const response = await fetch(
+            `/api/admin/check-admin/${currentUser.user.user_id}`,
+            {
+               method: 'GET',
+               headers: {
+                  'Content-Type': 'application/json',
+               },
+            }
+         );
+
+         const data = await response.json();
+
+         if (response.ok) {
+            setUserData(data.data);
+         } else {
+            console.error(data.error);
+         }
+      } catch (error) {
+         console.error(error);
+      }
+   };
+
+   const handleRouter = async () => {
+      if (userData) {
+         if (userData.isAdmin === true) {
+            router.push('/main-admin/dashboard');
+         } else if (userData.isSchoolAdmin === true) {
+            router.push('/school-admin/dashboard');
+         }
+      }
+   };
 
    const handleSubmit = async () => {
       let errorMsg = '';
@@ -71,15 +102,11 @@ const AdminLogin = () => {
                         status: res.data.status,
                         user_id: res.data.user_id,
                         usernameOrEmail: usernameOrEmail,
-                        isAdmin: res.data.isAdmin,
-                        isDriver: res.data.isDriver,
-                        isSchoolAdmin: res.data.isSchoolAdmin,
                      },
                      isLoggedIn: true,
                   })
                );
-
-               router.push('/school-admin/dashboard');
+               setUserData(res.data);
             } else {
                setError(res.error);
                setIsLoading(false);
@@ -93,7 +120,14 @@ const AdminLogin = () => {
          setIsLoading(false);
       }
    };
-
+   useEffect(() => {
+      if (currentUser.isLoggedIn === true) {
+         getUserData();
+      }
+   }, []);
+   useEffect(() => {
+      handleRouter();
+   }, [userData]);
    return (
       <div className="flex flex-col mx-auto max-w-screen-sm justify-center items-center mt-3 md:mt-5 ">
          <div className="flex flex-col items-center border border-slate-400 shadow-md py-3 md:py-6 px-3 md:px-6 rounded-md m-5">

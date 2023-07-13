@@ -10,10 +10,17 @@ export async function GET(request: NextRequest, { params }) {
       const userDataFromDB = await Users.findOne({
          _id: params.id,
       });
+      if (userDataFromDB.status == true) {
+         return NextResponse.json({
+            success: true,
+            error: null,
+            data: userDataFromDB,
+         });
+      }
       return NextResponse.json({
-         success: true,
-         error: null,
-         data: userDataFromDB,
+         success: false,
+         error: 'متاسفانه کاربر غیر فعال است.',
+         data: null,
       });
    } catch (e) {
       console.error(e);

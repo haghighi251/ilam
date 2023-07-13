@@ -58,7 +58,6 @@ export async function POST(request: NextRequest) {
                status: user.status,
                user_id: user._id,
                isAdmin: user.isAdmin,
-               isDriver: user.isDriver,
                isSchoolAdmin: user.isSchoolAdmin,
                uniqueCode: user.uniqueCode,
             },
