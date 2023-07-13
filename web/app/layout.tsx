@@ -1,11 +1,10 @@
 'use client';
-import TopMenu from '@/components/TopNav/TopMenu';
 import Head from '@/components/head';
-import { Providers } from '@/services/Redux/provider';
 import '../public/assets/css/index.css';
 // Supports weights 100-900
 import '@fontsource-variable/vazirmatn';
 import { ThemeProvider, createTheme } from '@mui/material';
+import { SessionProvider } from 'next-auth/react';
 
 // export const metadata = {
 //   title: "آسان انجام",
@@ -26,12 +25,15 @@ export default function RootLayout({
       <html dir="rtl" lang="fa">
          <Head />
          <body>
-            <Providers>
+            {/* <Providers>
                <ThemeProvider theme={theme}>
                   <TopMenu />
                   {children}
                </ThemeProvider>
-            </Providers>
+            </Providers> */}
+            <SessionProvider>
+               <ThemeProvider theme={theme}>{children}</ThemeProvider>
+            </SessionProvider>
          </body>
       </html>
    );

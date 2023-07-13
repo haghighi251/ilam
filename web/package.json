@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth/mongodb-adapter": "^1.0.0",
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@fontsource-variable/vazirmatn": "^5.0.5",
@@ -23,8 +24,11 @@
     "bcryptjs": "^2.4.3",
     "chart.js": "^4.3.0",
     "jsonwebtoken": "^9.0.0",
+    "mongodb": "^5.7.0",
+    "mongodb-client-encryption": "^2.9.0",
     "mongoose": "^6.10.3",
     "next": "^13.4.9",
+    "next-auth": "^4.22.1",
     "postcss": "8.4.23",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
