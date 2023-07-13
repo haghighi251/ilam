@@ -39,10 +39,10 @@ const AdminLogin = () => {
    const router = useRouter();
    const dispatch: AppDispatch = useDispatch();
    const currentUser: Iuser = useSelector(user);
-   if (currentUser.isLoggedIn !== false)
-      currentUser.user.isAdmin
-         ? router.push('/admin/dashboard')
-         : router.push('/');
+   // if (currentUser.isLoggedIn !== false)
+   //    currentUser.user.isAdmin
+   //       ? router.push('/admin/dashboard')
+   //       : router.push('/');
 
    const handleSubmit = async () => {
       let errorMsg = '';
