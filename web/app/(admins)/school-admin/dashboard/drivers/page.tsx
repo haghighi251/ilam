@@ -9,21 +9,51 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { useEffect, useState } from 'react';
 
-import AddModal from '@/components/admin/dashboard/drivers/AddModal';
-import Row from '@/components/admin/dashboard/drivers/TableRows';
+import AddModal from '@/components/schoolAdmin/dashboard/drivers/AddModal';
+import Row from '@/components/schoolAdmin/dashboard/drivers/TableRows';
+import { RootState } from '@/services/Redux/store';
+import { ISchoolAdminSchema, Iuser } from '@/utils/types';
+import { useSelector } from 'react-redux';
 
 const page: React.FC = () => {
    const [drivers, setDrivers] = useState([]);
    const [modalClosed, setModalClosed] = useState(false);
-   // To fetch the data and display it after the modal has been closed and the data has been deleted.
-   useEffect(() => {
-      fetchDrivers();
-   }, [modalClosed]);
+   const [schoolUniqueId, setSchoolUniqueId] = useState('');
+   // const currentUser = useSelector(user);
+   const currentUser: Iuser = useSelector((state: RootState) => state.user);
+   const schoolAdminState: ISchoolAdminSchema = useSelector(
+      (state: RootState) => state.schoolAdmin
+   );
 
-   async function fetchDrivers() {
+   // To fetch the data and display it after the modal has been closed and the data has been deleted.
+   const getSchoolUniqueId = async () => {
       try {
          const response = await fetch(
-            '/api/admin/authorized/drivers/filter/${}',
+            `/api/admin/authorized/school-admins/read/by-unique-code/${currentUser.user.uniqueCode}`,
+            {
+               method: 'GET',
+               headers: {
+                  'Content-Type': 'application/json',
+               },
+            }
+         );
+
+         const data = await response.json();
+
+         if (response.ok) {
+            console.log(data.data.schoolUniqueId);
+            setSchoolUniqueId(data.data.schoolUniqueId);
+         } else {
+            console.error(data.error);
+         }
+      } catch (error) {
+         console.error(error);
+      }
+   };
+   const fetchDrivers = async () => {
+      try {
+         const response = await fetch(
+            `/api/admin/authorized/drivers/filter/${schoolUniqueId}`,
             {
                method: 'GET',
                headers: {
@@ -42,7 +72,7 @@ const page: React.FC = () => {
       } catch (error) {
          console.error(error);
       }
-   }
+   };
 
    function createData(
       name: string,
@@ -68,6 +98,14 @@ const page: React.FC = () => {
    function handleModalClose() {
       setModalClosed(true);
    }
+   useEffect(() => {
+      if (schoolUniqueId !== '') {
+         fetchDrivers();
+      }
+   }, [modalClosed, schoolUniqueId]);
+   useEffect(() => {
+      getSchoolUniqueId();
+   }, []);
    return (
       <div className="w-full my-5">
          <Box sx={{ display: 'flex', justifyContent: 'space-between', my: 3 }}>

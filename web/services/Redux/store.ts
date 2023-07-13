@@ -3,17 +3,30 @@ import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import thunk from 'redux-thunk';
 
+import schoolAdminReducer from './schoolAdminReducer';
 import userReducer from './userReducer';
 
-const persistConfig = {
+const userPersistConfig = {
    key: 'User',
    storage,
 };
 
-const persistedReducer = persistReducer(persistConfig, userReducer);
-
+const schoolAdminPersistConfig = {
+   key: 'SchoolAdmin',
+   storage,
+};
+const persistedUserReducer = persistReducer(userPersistConfig, userReducer);
+const persistedSchoolAdminReducer = persistReducer(
+   schoolAdminPersistConfig,
+   schoolAdminReducer
+);
+// const persistedReducer = persistReducer(persistConfig, userReducer);
 const store = configureStore({
-   reducer: persistedReducer,
+   // reducer: persistedReducer,
+   reducer: {
+      user: persistedUserReducer,
+      schoolAdmin: persistedSchoolAdminReducer,
+   },
    devTools: process.env.NODE_ENV !== 'production',
    middleware: [thunk],
 });

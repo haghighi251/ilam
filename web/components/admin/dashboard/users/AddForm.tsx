@@ -9,6 +9,7 @@ import {
    InputLabel,
    MenuItem,
    Select,
+   SelectChangeEvent,
 } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
@@ -126,6 +127,9 @@ const AddForm = (props) => {
          console.error(error);
       }
    };
+   const selectSchool = (event: SelectChangeEvent) => {
+      setSchoolUniqueId(event.target.value as string);
+   };
    return (
       <div>
          {' '}
@@ -237,21 +241,18 @@ const AddForm = (props) => {
                   label="ادمین مدرسه"
                />
                {isSchoolAdmin && (
-                  <FormControl sx={{ m: 1, minWidth: 120 }}>
-                     <InputLabel id="demo-simple-select-helper-label">
-                        Age
-                     </InputLabel>
+                  <FormControl fullWidth>
+                     <InputLabel id="school-select-label">مدرسه</InputLabel>
                      <Select
-                        labelId="demo-simple-select-helper-label"
-                        id="demo-simple-select-helper"
+                        labelId="school-select-label"
+                        id="school-select"
                         value={schoolUniqueId}
                         label="مدرسه"
-                        onChange={(e) => setSchoolUniqueId(e.target.value)}
-                        required
+                        onChange={selectSchool}
                      >
                         {schools.length > 0 &&
                            schools.map((item) => (
-                              <MenuItem value={item.uniqueId}>
+                              <MenuItem value={item.schoolUniqueId}>
                                  {item.name}
                               </MenuItem>
                            ))}

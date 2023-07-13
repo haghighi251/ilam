@@ -1,6 +1,5 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { cookies } from 'next/headers';
 import { NextResponse, type NextRequest } from 'next/server';
 
 import UsersSchema from '@/schemas/Users';
@@ -53,12 +52,12 @@ export async function POST(request: NextRequest) {
 
          return NextResponse.json({
             success: true,
-            error: '',
+            error: null,
             data: {
                status: user.status,
                user_id: user._id,
-               isAdmin: user.isAdmin,
-               isSchoolAdmin: user.isSchoolAdmin,
+               usernameOrEmail: user.username || user.mobile || user.email,
+               mobile: user.mobile,
                uniqueCode: user.uniqueCode,
             },
          });

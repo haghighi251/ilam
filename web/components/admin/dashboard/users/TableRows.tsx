@@ -63,7 +63,6 @@ const Row = (props) => {
                      uniqueCode={row.uniqueCode}
                      status={row.status}
                      activationCode={row.activationCode}
-                     schoolUniqueId={schoolUniqueId}
                   />
                   <DeleteModal
                      onClose={handleModalClose}

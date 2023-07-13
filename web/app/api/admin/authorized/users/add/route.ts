@@ -50,36 +50,32 @@ export async function POST(request: NextRequest) {
          status: body.status,
          activationCode: body.activationCode,
       });
-      await newUser
-         .save()
-         .then(async () => {
-            // To Create SchoolAdmin record in database if the user is a school admin.
-            if (body.schoolUniqueId !== '') {
-               const newSchoolAdmin: ISchoolAdminSchema = new SchoolAdmin({
-                  schoolAdminUnique: randomNumber,
-                  schoolUniqueId: body.schoolUniqueId,
-               });
-               await newSchoolAdmin.save();
-            }
-            return NextResponse.json({
-               success: true,
-               error: null,
-               data: null,
-            });
-         })
-         .catch(() => {
-            return NextResponse.json({
-               success: false,
-               error: 'خطایی در سرور رخ داده است. لطفا لحظاتی دیگر مجددا تلاش نمایید.',
-               data: null,
-            });
-         });
+      try {
+         await newUser.save();
 
-      return NextResponse.json({
-         success: false,
-         error: null,
-         data: null,
-      });
+         // To Create SchoolAdmin record in database if the user is a school admin.
+         console.log(body.schoolUniqueId);
+         if (body.schoolUniqueId !== '') {
+            const newSchoolAdmin: ISchoolAdminSchema = new SchoolAdmin({
+               schoolAdminUnique: randomNumber,
+               schoolUniqueId: body.schoolUniqueId,
+            });
+            await newSchoolAdmin.save();
+         }
+
+         return NextResponse.json({
+            success: true,
+            error: null,
+            data: null,
+         });
+      } catch (error) {
+         console.error(error);
+         return NextResponse.json({
+            success: false,
+            error: error.message,
+            data: null,
+         });
+      }
    } catch (e) {
       return NextResponse.json({
          success: false,

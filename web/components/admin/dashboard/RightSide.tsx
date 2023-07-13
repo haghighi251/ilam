@@ -17,10 +17,10 @@ const RightSide = () => {
 
    return (
       <div className="basis-1/4 bg-white w-full h-screen">
-         <Link href={`/admin/dashboard/`}>
+         <Link href={`/main-admin/dashboard/`}>
             <div
                className={`rightMenuLink ${
-                  isRouteActive('/admin/dashboard/')
+                  isRouteActive('/main-admin/dashboard/')
                      ? 'rightMenuLinkActive'
                      : ''
                }`}
@@ -31,10 +31,10 @@ const RightSide = () => {
                </div>
             </div>
          </Link>
-         <Link href={`/admin/dashboard/users`}>
+         <Link href={`/main-admin/dashboard/users`}>
             <div
                className={`rightMenuLink ${
-                  isRouteActive('/admin/dashboard/users')
+                  isRouteActive('/main-admin/dashboard/users')
                      ? 'rightMenuLinkActive'
                      : ''
                }`}
@@ -45,10 +45,10 @@ const RightSide = () => {
                </div>
             </div>
          </Link>
-         <Link href={`/admin/dashboard/provinces`}>
+         <Link href={`/main-admin/dashboard/provinces`}>
             <div
                className={`rightMenuLink ${
-                  isRouteActive('/admin/dashboard/provinces')
+                  isRouteActive('/main-admin/dashboard/provinces')
                      ? 'rightMenuLinkActive'
                      : ''
                }`}
@@ -59,10 +59,10 @@ const RightSide = () => {
                </div>
             </div>
          </Link>
-         <Link href={`/admin/dashboard/cities`}>
+         <Link href={`/main-admin/dashboard/cities`}>
             <div
                className={`rightMenuLink ${
-                  isRouteActive('/admin/dashboard/cities')
+                  isRouteActive('/main-admin/dashboard/cities')
                      ? 'rightMenuLinkActive'
                      : ''
                }`}
@@ -73,10 +73,10 @@ const RightSide = () => {
                </div>
             </div>
          </Link>
-         <Link href={`/admin/dashboard/schools`}>
+         <Link href={`/main-admin/dashboard/schools`}>
             <div
                className={`rightMenuLink ${
-                  isRouteActive('/admin/dashboard/schools')
+                  isRouteActive('/main-admin/dashboard/schools')
                      ? 'rightMenuLinkActive'
                      : ''
                }`}
@@ -87,10 +87,10 @@ const RightSide = () => {
                </div>
             </div>
          </Link>
-         <Link href={`/admin/dashboard/drivers`}>
+         <Link href={`/main-admin/dashboard/drivers`}>
             <div
                className={`rightMenuLink ${
-                  isRouteActive('/admin/dashboard/drivers')
+                  isRouteActive('/main-admin/dashboard/drivers')
                      ? 'rightMenuLinkActive'
                      : ''
                }`}
@@ -101,10 +101,10 @@ const RightSide = () => {
                </div>
             </div>
          </Link>
-         <Link href={`/admin/dashboard/parents`}>
+         <Link href={`/main-admin/dashboard/parents`}>
             <div
                className={`rightMenuLink ${
-                  isRouteActive('/admin/dashboard/parents')
+                  isRouteActive('/main-admin/dashboard/parents')
                      ? 'rightMenuLinkActive'
                      : ''
                }`}
@@ -115,10 +115,10 @@ const RightSide = () => {
                </div>
             </div>
          </Link>
-         <Link href={`/admin/dashboard/students`}>
+         <Link href={`/main-admin/dashboard/students`}>
             <div
                className={`rightMenuLink ${
-                  isRouteActive('/admin/dashboard/students')
+                  isRouteActive('/main-admin/dashboard/students')
                      ? 'rightMenuLinkActive'
                      : ''
                }`}
@@ -132,7 +132,7 @@ const RightSide = () => {
          <Link href={`/`}>
             <div
                className={`rightMenuLink ${
-                  isRouteActive('/admin/dashboard/')
+                  isRouteActive('/main-admin/dashboard/')
                      ? 'rightMenuLinkActive'
                      : ''
                }`}
@@ -143,10 +143,10 @@ const RightSide = () => {
                </div>
             </div>
          </Link>
-         <Link href={`/admin/dashboard/news`}>
+         <Link href={`/main-admin/dashboard/news`}>
             <div
                className={`rightMenuLink ${
-                  isRouteActive('/admin/dashboard/news')
+                  isRouteActive('/main-admin/dashboard/news')
                      ? 'rightMenuLinkActive'
                      : ''
                }`}

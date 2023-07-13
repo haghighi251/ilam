@@ -282,7 +282,7 @@ const UpdateForm = (props) => {
                      >
                         {schools.length > 0 &&
                            schools.map((item) => (
-                              <MenuItem value={item.uniqueId}>
+                              <MenuItem value={item.schoolUniqueId}>
                                  {item.name}
                               </MenuItem>
                            ))}

@@ -5,6 +5,8 @@ export interface Iuser {
       status: boolean | undefined;
       user_id: string | undefined;
       usernameOrEmail?: string | undefined;
+      mobile?: string | undefined;
+      uniqueCode: string | undefined;
    };
    isLoggedIn: boolean;
 }
@@ -54,8 +56,8 @@ export interface ISchoolSchema extends Document {
 }
 
 export interface ISchoolAdminSchema extends Document {
-   schoolAdminUnique: string;
-   schoolUniqueId: string;
+   schoolAdminUnique: string | undefined;
+   schoolUniqueId: string | undefined;
 }
 
 export interface IDriversSchema extends Document {

@@ -1,19 +1,19 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-import Users from '@/schemas/Users';
+import SchoolAdmin from '@/schemas/SchoolAdmin';
 import connectMongo from '@/utils/connectMongo';
 
 export async function GET(request: NextRequest, { params }) {
    try {
       await connectMongo();
-      // Fetch the Users
-      const userDataFromDB = await Users.findOne({
-         _id: params.id,
+      // Fetch the SchoolAdmin data from DB.
+      const schoolAdminDataFromDB = await SchoolAdmin.findOne({
+         schoolAdminUnique: params.uniqueCode,
       });
       return NextResponse.json({
          success: true,
          error: null,
-         data: userDataFromDB,
+         data: schoolAdminDataFromDB,
       });
    } catch (e) {
       console.error(e);

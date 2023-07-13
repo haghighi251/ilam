@@ -1,9 +1,8 @@
-"use client";
-import LeftSide from "@/components/admin/dashboard/LeftSide";
-import React from "react";
+'use client';
+import LeftSide from '@/components/admin/dashboard/LeftSide';
 
 const page = () => {
-  return <LeftSide />;
+   return <LeftSide />;
 };
 
 export default page;

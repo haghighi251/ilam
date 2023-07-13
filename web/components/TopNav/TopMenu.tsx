@@ -2,12 +2,16 @@
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { AppDispatch } from '@/services/Redux/store';
-import { actionLogout, user } from '@/services/Redux/userReducer';
-import { Iuser } from '@/utils/types';
+import { AppDispatch, RootState } from '@/services/Redux/store';
+import { actionLogout } from '@/services/Redux/userReducer';
+import { ISchoolAdminSchema, Iuser } from '@/utils/types';
+import { Button } from '@mui/material';
 
 const TopMenu = () => {
-   const currentUser: Iuser = useSelector(user);
+   const currentUser: Iuser = useSelector((state: RootState) => state.user);
+   const schoolAdminState: ISchoolAdminSchema = useSelector(
+      (state: RootState) => state.schoolAdmin
+   );
    const dispatch: AppDispatch = useDispatch();
 
    const logOut = async () => {
@@ -16,7 +20,6 @@ const TopMenu = () => {
 
    return (
       <div className="flex mx-auto flex-col md:flex-row p-3 md:p-5 bg-sky-300 gap-2">
-         <Link href="/">شروع</Link>
          {currentUser.isLoggedIn === false && (
             <>
                <Link href="/Login">ورود</Link>
@@ -24,20 +27,7 @@ const TopMenu = () => {
          )}
          {currentUser.isLoggedIn === true && (
             <>
-               {(currentUser.user.isDriver === false) !== false && (
-                  <>
-                     <Link href="#" onClick={logOut}>
-                        خروج
-                     </Link>
-                  </>
-               )}
-               {(currentUser.user.isDriver === true) === true && (
-                  <>
-                     <Link href="#" onClick={logOut}>
-                        خروج راننده
-                     </Link>
-                  </>
-               )}
+               <Button onClick={logOut}>خروج</Button>
             </>
          )}
       </div>

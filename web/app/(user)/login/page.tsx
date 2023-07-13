@@ -1,6 +1,6 @@
 'use client';
-import { AppDispatch } from '@/services/Redux/store';
-import { actionLogin, user } from '@/services/Redux/userReducer';
+import { AppDispatch, RootState } from '@/services/Redux/store';
+import { actionLogin } from '@/services/Redux/userReducer';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Button } from '@mui/material';
 import Alert from '@mui/material/Alert';
@@ -11,7 +11,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Loading from '@/components/loading';
-import { Iuser } from '@/utils/types';
+import { setSchoolAdmin } from '@/services/Redux/schoolAdminReducer';
+import { ISchoolAdminSchema, Iuser } from '@/utils/types';
 import { isValidPassword } from '@/utils/validation';
 
 async function DoAdminLogin(usernameOrEmail: string, password: string) {
@@ -38,7 +39,11 @@ const AdminLogin = () => {
    const [userData, setUserData] = useState(null);
    const router = useRouter();
    const dispatch: AppDispatch = useDispatch();
-   const currentUser: Iuser = useSelector(user);
+   // const currentUser: Iuser = useSelector(user);
+   const currentUser: Iuser = useSelector((state: RootState) => state.user);
+   const schoolAdminState: ISchoolAdminSchema = useSelector(
+      (state: RootState) => state.schoolAdmin
+   );
 
    const getUserData = async () => {
       try {
@@ -102,6 +107,8 @@ const AdminLogin = () => {
                         status: res.data.status,
                         user_id: res.data.user_id,
                         usernameOrEmail: usernameOrEmail,
+                        mobile: res.data.mobile,
+                        uniqueCode: res.data.uniqueCode,
                      },
                      isLoggedIn: true,
                   })
@@ -116,7 +123,7 @@ const AdminLogin = () => {
             setIsLoading(false);
          }
       } catch (e) {
-         setError('متاسفانه یک خطا رخ داده است. لطفا لحظاتی دیگر تلاش نمایید.');
+         setError(e.message);
          setIsLoading(false);
       }
    };
@@ -124,7 +131,8 @@ const AdminLogin = () => {
       if (currentUser.isLoggedIn === true) {
          getUserData();
       }
-   }, []);
+   });
+
    useEffect(() => {
       handleRouter();
    }, [userData]);

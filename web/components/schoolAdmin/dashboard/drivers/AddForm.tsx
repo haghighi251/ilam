@@ -2,10 +2,6 @@
 import { Button } from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import { useEffect, useState } from 'react';
 
@@ -21,19 +17,12 @@ const AddForm = (props) => {
    const [loading, setLoading] = useState<boolean>(false);
    const [error, setError] = useState<string | null>('');
    const [successMessage, setSuccessMessage] = useState<string>('');
-
-   const [schools, setSchools] = useState([]);
    const [mobile, setMobile] = useState<string>('');
    const [schoolUniqueId, setSchoolUniqueId] = useState<string>('');
 
    const handleSubmit = async () => {
       let errorMsg = null;
-      if (
-         mobile === null ||
-         mobile === undefined ||
-         schoolUniqueId === null ||
-         schoolUniqueId === undefined
-      )
+      if (mobile === null || mobile === undefined)
          errorMsg = 'لطفا نام راننده و مدرسه را وارد نمایید.';
       setError(errorMsg);
 
@@ -92,13 +81,8 @@ const AddForm = (props) => {
    useEffect(() => {
       fetchSchools();
    }, []);
-
-   const selectSchool = (event: SelectChangeEvent) => {
-      setSchoolUniqueId(event.target.value as string);
-   };
    return (
       <div>
-         {' '}
          <Box className="mb-4">
             <TextField
                id="input-with-sx"
@@ -109,22 +93,6 @@ const AddForm = (props) => {
                onChange={(e) => setMobile(e.target.value)}
                required
             />
-            <FormControl fullWidth>
-               <InputLabel id="demo-simple-select-label">مدرسه</InputLabel>
-               <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={schoolUniqueId}
-                  label="مدرسه"
-                  onChange={selectSchool}
-               >
-                  {schools.map((item) => (
-                     <MenuItem value={item.schoolUniqueId}>
-                        {item.name}
-                     </MenuItem>
-                  ))}
-               </Select>
-            </FormControl>
          </Box>
          {error && (
             <Alert severity="error" className="mb-3 md:mb-6">
