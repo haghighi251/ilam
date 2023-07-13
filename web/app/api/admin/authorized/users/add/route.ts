@@ -1,8 +1,9 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
+import SchoolAdmin from '@/schemas/SchoolAdmin';
 import Users from '@/schemas/Users';
 import connectMongo from '@/utils/connectMongo';
-import { IUsersSchema } from '@/utils/types';
+import { ISchoolAdminSchema, IUsersSchema } from '@/utils/types';
 
 export async function POST(request: NextRequest) {
    try {
@@ -49,10 +50,17 @@ export async function POST(request: NextRequest) {
          status: body.status,
          activationCode: body.activationCode,
       });
-
       await newUser
          .save()
-         .then(() => {
+         .then(async () => {
+            // To Create SchoolAdmin record in database if the user is a school admin.
+            if (body.schoolUniqueId !== '') {
+               const newSchoolAdmin: ISchoolAdminSchema = new SchoolAdmin({
+                  schoolAdminUnique: randomNumber,
+                  schoolUniqueId: body.schoolUniqueId,
+               });
+               await newSchoolAdmin.save();
+            }
             return NextResponse.json({
                success: true,
                error: null,
@@ -68,7 +76,7 @@ export async function POST(request: NextRequest) {
          });
 
       return NextResponse.json({
-         success: true,
+         success: false,
          error: null,
          data: null,
       });

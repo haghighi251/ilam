@@ -1,13 +1,23 @@
 'use client';
-import { Button, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import {
+   Button,
+   Checkbox,
+   FormControl,
+   FormControlLabel,
+   FormGroup,
+   FormHelperText,
+   InputLabel,
+   MenuItem,
+   Select,
+} from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Loading from '@/components/loading';
 
-const AddForm = (props) => {
+const UpdateForm = (props) => {
    // Use the handleClose function as needed
    const handleFormClose = () => {
       // Perform any necessary logic
@@ -39,6 +49,10 @@ const AddForm = (props) => {
       props.activationCode
    );
 
+   // For when the user school admin check box returns true
+   const [schools, setSchools] = useState([]);
+   const [schoolUniqueId, setSchoolUniqueId] = useState('');
+
    const handleSubmit = async () => {
       let errorMsg = null;
 
@@ -65,6 +79,7 @@ const AddForm = (props) => {
                   uniqueCode: props.uniqueCode,
                   status: status,
                   activationCode: activationCode,
+                  schoolUniqueId: schoolUniqueId, // For when the user school admin check box returns true
                }),
             });
 
@@ -85,6 +100,7 @@ const AddForm = (props) => {
                setIsProvinceAdmin(false);
                setStatus(false);
                setActivationCode('');
+               setSchoolUniqueId('');
                handleFormClose(); // Close the modal if desired
             } else {
                setError(responseData.error);
@@ -98,9 +114,55 @@ const AddForm = (props) => {
          setLoading(false);
       }
    };
+   const getSchoolAdmin = async () => {
+      try {
+         const response = await fetch(
+            `/api/admin/authorized/school-admins/read/${props.mobile}`,
+            {
+               method: 'GET',
+               headers: {
+                  'Content-Type': 'application/json',
+               },
+            }
+         );
+         const data = await response.json();
+
+         if (response.ok) {
+            setSchoolUniqueId(data.data.schoolUniqueId);
+         } else {
+            console.error(data.error);
+         }
+      } catch (error) {
+         console.error(error);
+      }
+   };
+   const fetchSchools = async () => {
+      try {
+         const response = await fetch('/api/admin/authorized/schools/all', {
+            method: 'GET',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+         });
+         const data = await response.json();
+
+         if (response.ok) {
+            setSchools(data.data);
+         } else {
+            console.error(data.error);
+         }
+      } catch (error) {
+         console.error(error);
+      }
+   };
+   useEffect(() => {
+      if (isSchoolAdmin) {
+         fetchSchools();
+         getSchoolAdmin();
+      }
+   }, [isSchoolAdmin]);
    return (
       <div>
-         {' '}
          <Box className="mb-4">
             <TextField
                id="input-with-sx"
@@ -205,6 +267,32 @@ const AddForm = (props) => {
                   }
                   label="ادمین مدرسه"
                />
+               {isSchoolAdmin && (
+                  <FormControl sx={{ m: 1, minWidth: 120 }}>
+                     <InputLabel id="demo-simple-select-helper-label">
+                        Age
+                     </InputLabel>
+                     <Select
+                        labelId="demo-simple-select-helper-label"
+                        id="demo-simple-select-helper"
+                        value={schoolUniqueId}
+                        label="مدرسه"
+                        onChange={(e) => setSchoolUniqueId(e.target.value)}
+                        required
+                     >
+                        {schools.length > 0 &&
+                           schools.map((item) => (
+                              <MenuItem value={item.uniqueId}>
+                                 {item.name}
+                              </MenuItem>
+                           ))}
+                     </Select>
+                     <FormHelperText>
+                        مدرسه ای که قرار است این کاربر مدیر آن باشد را انتخاب
+                        کنید
+                     </FormHelperText>
+                  </FormControl>
+               )}
                <FormControlLabel
                   control={
                      <Checkbox
@@ -260,4 +348,4 @@ const AddForm = (props) => {
    );
 };
 
-export default AddForm;
+export default UpdateForm;

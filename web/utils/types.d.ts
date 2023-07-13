@@ -56,7 +56,6 @@ export interface ISchoolSchema extends Document {
 export interface ISchoolAdminSchema extends Document {
    schoolAdminUnique: string;
    schoolUniqueId: string;
-   isSchoolAdmin: boolean;
 }
 
 export interface IDriversSchema extends Document {
@@ -117,7 +116,7 @@ export interface IDriversDocumentsSchema extends Document {
 }
 
 export interface IProvincesAdminSchema extends Document {
-   rovincessAdminUnique: string;
+   provinceAdminUnique: string;
    provinceUnique: string;
 }
 

@@ -1,5 +1,15 @@
 'use client';
-import { Button, Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import {
+   Button,
+   Checkbox,
+   FormControl,
+   FormControlLabel,
+   FormGroup,
+   FormHelperText,
+   InputLabel,
+   MenuItem,
+   Select,
+} from '@mui/material';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -33,6 +43,10 @@ const AddForm = (props) => {
    const [status, setStatus] = useState<boolean>(false);
    const [activationCode, setActivationCode] = useState<string>('');
 
+   // For when the user school admin check box returns true
+   const [schools, setSchools] = useState([]);
+   const [schoolUniqueId, setSchoolUniqueId] = useState('');
+
    const handleSubmit = async () => {
       let errorMsg = null;
 
@@ -58,6 +72,7 @@ const AddForm = (props) => {
                   isProvinceAdmin: isProvinceAdmin,
                   status: status,
                   activationCode: activationCode,
+                  schoolUniqueId: schoolUniqueId, // For when the user school admin check box returns true
                }),
             });
 
@@ -78,6 +93,7 @@ const AddForm = (props) => {
                setIsProvinceAdmin(false);
                setStatus(false);
                setActivationCode('');
+               setSchoolUniqueId('');
                handleFormClose(); // Close the modal if desired
             } else {
                setError(responseData.error);
@@ -89,6 +105,25 @@ const AddForm = (props) => {
             );
          }
          setLoading(false);
+      }
+   };
+   const fetchSchools = async () => {
+      try {
+         const response = await fetch('/api/admin/authorized/schools/all', {
+            method: 'GET',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+         });
+         const data = await response.json();
+
+         if (response.ok) {
+            setSchools(data.data);
+         } else {
+            console.error(data.error);
+         }
+      } catch (error) {
+         console.error(error);
       }
    };
    return (
@@ -193,11 +228,40 @@ const AddForm = (props) => {
                         checked={isSchoolAdmin}
                         onChange={(e) => {
                            setIsSchoolAdmin(e.target.checked);
+                           if (e.target.checked) {
+                              fetchSchools();
+                           }
                         }}
                      />
                   }
                   label="ادمین مدرسه"
                />
+               {isSchoolAdmin && (
+                  <FormControl sx={{ m: 1, minWidth: 120 }}>
+                     <InputLabel id="demo-simple-select-helper-label">
+                        Age
+                     </InputLabel>
+                     <Select
+                        labelId="demo-simple-select-helper-label"
+                        id="demo-simple-select-helper"
+                        value={schoolUniqueId}
+                        label="مدرسه"
+                        onChange={(e) => setSchoolUniqueId(e.target.value)}
+                        required
+                     >
+                        {schools.length > 0 &&
+                           schools.map((item) => (
+                              <MenuItem value={item.uniqueId}>
+                                 {item.name}
+                              </MenuItem>
+                           ))}
+                     </Select>
+                     <FormHelperText>
+                        مدرسه ای که قرار است این کاربر مدیر آن باشد را انتخاب
+                        کنید
+                     </FormHelperText>
+                  </FormControl>
+               )}
                <FormControlLabel
                   control={
                      <Checkbox

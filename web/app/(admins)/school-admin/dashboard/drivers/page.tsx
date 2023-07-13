@@ -22,12 +22,15 @@ const page: React.FC = () => {
 
    async function fetchDrivers() {
       try {
-         const response = await fetch('/api/admin/authorized/drivers/all', {
-            method: 'GET',
-            headers: {
-               'Content-Type': 'application/json',
-            },
-         });
+         const response = await fetch(
+            '/api/admin/authorized/drivers/filter/${}',
+            {
+               method: 'GET',
+               headers: {
+                  'Content-Type': 'application/json',
+               },
+            }
+         );
 
          const data = await response.json();
 

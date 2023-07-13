@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
+import SchoolAdmin from '@/schemas/SchoolAdmin';
 import Users from '@/schemas/Users';
 import connectMongo from '@/utils/connectMongo';
 
@@ -41,13 +42,22 @@ export async function PATCH(request: NextRequest) {
                activationCode: body.activationCode,
             },
          },
-         { new: true }
+         { new: false }
       );
+      if (
+         userData &&
+         userData.isSchoolAdmin === true &&
+         body.isSchoolAdmin === false
+      ) {
+         await SchoolAdmin.findOneAndDelete({
+            schoolAdminUnique: body.uniqueCode,
+         });
+      }
 
       if (!userData) {
          return NextResponse.json({
             success: false,
-            error: 'کاربری ای با این شناسه وجود ندارد.',
+            error: 'کاربری با این شناسه وجود ندارد.',
             data: null,
          });
       }
@@ -55,7 +65,7 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({
          success: true,
          error: null,
-         data: userData,
+         data: null,
       });
    } catch (e) {
       return NextResponse.json({
