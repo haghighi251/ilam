@@ -2,11 +2,13 @@ import { Document } from 'mongoose';
 
 export interface Iuser {
    user: {
+      status: boolean | undefined;
       user_id: string | undefined;
       mobile?: string | undefined;
       usernameOrEmail?: string | undefined;
       isAdmin: boolean | undefined;
       isDriver: boolean | undefined;
+      isSchoolAdmin: boolean | undefined;
    };
    isLoggedIn: boolean;
 }

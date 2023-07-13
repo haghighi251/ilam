@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { cookies } from 'next/headers';
 import { NextResponse, type NextRequest } from 'next/server';
 
 import UsersSchema from '@/schemas/Users';
@@ -13,9 +14,9 @@ export async function POST(request: NextRequest) {
       // We have to check if the request is for a new user or not.
       const user = await UsersSchema.findOne({
          $or: [
-            { mobile: body.usernameOrEmail, isAdmin: true },
-            { username: body.usernameOrEmail, isAdmin: true },
-            { email: body.usernameOrEmail, isAdmin: true },
+            { mobile: body.usernameOrEmail },
+            { username: body.usernameOrEmail },
+            { email: body.usernameOrEmail },
          ],
       });
 
@@ -54,9 +55,11 @@ export async function POST(request: NextRequest) {
             success: true,
             error: '',
             data: {
+               status: user.status,
                user_id: user._id,
                isAdmin: user.isAdmin,
                isDriver: user.isDriver,
+               isSchoolAdmin: user.isSchoolAdmin,
                uniqueCode: user.uniqueCode,
             },
          });

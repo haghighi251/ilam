@@ -6,7 +6,7 @@ import thunk from 'redux-thunk';
 import userReducer from './userReducer';
 
 const persistConfig = {
-   key: 'adminUser',
+   key: 'User',
    storage,
 };
 

@@ -1,176 +1,147 @@
-"use client";
-import { useState, useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "@/services/Redux/store";
-import { actionLogin, user } from "@/services/Redux/userReducer";
+'use client';
+import { AppDispatch } from '@/services/Redux/store';
+import { actionLogin, user } from '@/services/Redux/userReducer';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import { Button } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { isValidPhone } from "@/utils/validation";
-import { Iuser } from "@/utils/types";
-import LoginForm from "./LoginForm";
-import ActivationForm from "./ActivationForm";
+import Loading from '@/components/loading';
+import { Iuser } from '@/utils/types';
+import { isValidPassword } from '@/utils/validation';
 
-// export const metadata = {
-//   title: "ورود به حساب کاربری",
-//   description: "پلتفرم خرید و فروش رایگان کالا و خدمات",
-// };
+async function DoAdminLogin(usernameOrEmail: string, password: string) {
+   const res = await fetch('/api/admin/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+         usernameOrEmail: usernameOrEmail,
+         password: password,
+      }),
+   });
+   if (!res.ok) {
+      throw new Error('خطا در ارتباط با سرور.');
+   }
 
-async function RegisterOrLogin(mobile: string) {
-  const res = await fetch("/api/auth/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      mobile: mobile,
-    }),
-  });
-  if (!res.ok) {
-    throw new Error("خطا در ارتباط با سرور.");
-  }
-  return res.json();
+   return res.json();
 }
 
-async function CheckActivationCodeOnDB(mobile: string, code: string) {
-  const res = await fetch("/api/auth/activation", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      mobile: mobile,
-      code: code,
-    }),
-  });
-  if (!res.ok) {
-    throw new Error("خطا در ارتباط با سرور.");
-  }
+const AdminLogin = () => {
+   const [usernameOrEmail, setUsernameOrEmail] = useState<string>('');
+   const [password, setPassword] = useState<string>('');
+   const [error, setError] = useState<string | null>(null);
+   const [isLoading, setIsLoading] = useState<boolean>(false);
+   const router = useRouter();
+   const dispatch: AppDispatch = useDispatch();
+   const currentUser: Iuser = useSelector(user);
+   // if (currentUser.isLoggedIn !== false)
+   //    currentUser.user.isAdmin
+   //       ? router.push('/admin/dashboard')
+   //       : router.push('/');
 
-  return res.json();
-}
+   const handleSubmit = async () => {
+      let errorMsg = '';
+      try {
+         if (
+            usernameOrEmail === null ||
+            usernameOrEmail === undefined ||
+            password === null ||
+            password === undefined
+         ) {
+            errorMsg += 'لطفا شماره همراه خود را وارد نمایید.\n';
+         }
 
-export default function Login() {
-  const [mobile, setMobile] = useState<string>("");
-  const [activationCode, setActivationCode] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [showActivation, setShowActivation] = useState<boolean>(false);
+         if (!isValidPassword(password)) {
+            errorMsg += 'رمز عبور صحیح نیست.\n';
+         }
 
-  const router = useRouter();
-  const dispatch: AppDispatch = useDispatch();
-  const currentUser: Iuser = useSelector(user);
+         if (errorMsg === '') {
+            // Handling the submit event of the registration of the form
+            setIsLoading(true);
+            setError(null);
+            const res: any = await DoAdminLogin(usernameOrEmail, password);
+            if (res.success) {
+               dispatch(
+                  actionLogin({
+                     user: {
+                        status: res.data.status,
+                        user_id: res.data.user_id,
+                        usernameOrEmail: usernameOrEmail,
+                        isAdmin: res.data.isAdmin,
+                        isDriver: res.data.isDriver,
+                        isSchoolAdmin: res.data.isSchoolAdmin,
+                     },
+                     isLoggedIn: true,
+                  })
+               );
 
-  if (currentUser.isLoggedIn !== false)
-    currentUser.user.isAdmin
-      ? router.push("/admin/dashboard")
-      : router.push("/");
-
-  const setMobileChanges = useCallback(
-    (value: string) => {
-      setMobile(value);
-    },
-    [mobile]
-  );
-
-  const handleSubmit = useCallback(async () => {
-    let errorMsg = "";
-    try {
-      if (mobile === null || mobile === undefined) {
-        errorMsg += "لطفا شماره همراه خود را وارد نمایید.";
+               router.push('/school-admin/dashboard');
+            } else {
+               setError(res.error);
+               setIsLoading(false);
+            }
+         } else {
+            setError(errorMsg);
+            setIsLoading(false);
+         }
+      } catch (e) {
+         setError('متاسفانه یک خطا رخ داده است. لطفا لحظاتی دیگر تلاش نمایید.');
+         setIsLoading(false);
       }
+   };
 
-      if (!isValidPhone(mobile)) {
-        errorMsg +=
-          "شماره همراه صحیح نیست. لطفا شماره یازده رقمی که با صفر آغاز می شود را وارد کنید.";
-      }
-
-      if (errorMsg === "") {
-        // Handling the submit event of the registration of the form
-        setIsLoading(true);
-        setError(null);
-        const data: any = await RegisterOrLogin(mobile);
-        // console.log(data);
-        if (data.success) {
-          setShowActivation(true);
-          setIsLoading(false);
-        } else {
-          setError(data.error);
-          setIsLoading(false);
-        }
-      } else {
-        setError(errorMsg);
-        setIsLoading(false);
-      }
-    } catch (e) {
-      setError("متاسفانه یک خطا رخ داده است. لطفا لحظاتی دیگر تلاش نمایید.");
-      setIsLoading(false);
-    }
-  }, [mobile, error, isLoading, showActivation]);
-
-  const handleActivationCode = useCallback(
-    (value: string) => {
-      setActivationCode(value);
-    },
-    [activationCode]
-  );
-
-  const handleActivation = useCallback(async () => {
-    let errorMsg = "";
-    try {
-      if (activationCode === null || activationCode === undefined) {
-        errorMsg += "لطفا کد فعال سازی خود را وارد نمایید.";
-      }
-
-      if (errorMsg === "") {
-        // Handling the submit event of the registration of the form
-        setIsLoading(true);
-        setError(null);
-        const res: any = await CheckActivationCodeOnDB(mobile, activationCode);
-        if (res.success) {
-          dispatch(
-            actionLogin({
-              user: {
-                user_id: res.data.user_id,
-                mobile: mobile,
-                isAdmin: res.data.isAdmin,
-                isDriver: res.data.isDriver,
-              },
-              isLoggedIn: true,
-            })
-          );
-          router.push("/");
-        } else {
-          setError(res.error);
-          setIsLoading(false);
-        }
-      } else {
-        setError(errorMsg);
-        setIsLoading(false);
-      }
-    } catch (e) {
-      setError("متاسفانه یک خطا رخ داده است. لطفا لحظاتی دیگر تلاش نمایید.");
-      setIsLoading(false);
-    }
-  }, [activationCode]);
-
-  return (
-    <div className="flex flex-col mx-auto max-w-screen-sm justify-center items-center mt-3 md:mt-5 ">
-      <div className="flex flex-col items-center border border-slate-400 shadow-md py-3 md:py-6 px-3 md:px-6 rounded-md m-5">
-        {showActivation === false && (
-          <LoginForm
-            mobile={mobile}
-            error={error}
-            isLoading={isLoading}
-            setMobileChanges={setMobileChanges}
-            handleSubmit={handleSubmit}
-          />
-        )}
-        {showActivation === true && (
-          <ActivationForm
-            handleActivation={handleActivation}
-            activationCode={activationCode}
-            handleActivationCode={handleActivationCode}
-            error={error}
-            isLoading={isLoading}
-          />
-        )}
+   return (
+      <div className="flex flex-col mx-auto max-w-screen-sm justify-center items-center mt-3 md:mt-5 ">
+         <div className="flex flex-col items-center border border-slate-400 shadow-md py-3 md:py-6 px-3 md:px-6 rounded-md m-5">
+            <Alert severity="success">ورود به پنل مدیریت</Alert>
+            <Box
+               sx={{ display: 'flex', alignItems: 'flex-end' }}
+               className="mb-4"
+            >
+               <AccountCircle sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+               <TextField
+                  id="input-with-sx"
+                  label="ایمیل و یا نام کاربری"
+                  variant="standard"
+                  value={usernameOrEmail}
+                  name="usernameOrEmail"
+                  onChange={(e) => setUsernameOrEmail(e.target.value)}
+                  required
+               />
+            </Box>
+            <Box
+               sx={{ display: 'flex', alignItems: 'flex-end' }}
+               className="mb-4"
+            >
+               <AccountCircle sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+               <TextField
+                  id="input-with-sx"
+                  label="رمز عبور"
+                  variant="standard"
+                  value={password}
+                  type="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+               />
+            </Box>
+            {error && (
+               <Alert severity="error" className="mb-3 md:mb-6">
+                  {error}
+               </Alert>
+            )}
+            {!isLoading && (
+               <Button variant="contained" type="submit" onClick={handleSubmit}>
+                  ورود
+               </Button>
+            )}
+            {isLoading && <Loading />}
+         </div>
       </div>
-    </div>
-  );
-}
+   );
+};
+
+export default AdminLogin;
